@@ -1,0 +1,730 @@
+{
+  "active": false,
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Generar Cuento",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generar Cuento": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send an audio file": {
+      "main": [
+        [
+          {
+            "node": "Send a text message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Generar Cuento",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Structured Output Parser",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update_db": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Send an audio file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Structured Output Parser1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-07T01:41:05.319Z",
+  "id": "JA9IVtYAjrNvhnCR",
+  "isArchived": false,
+  "meta": null,
+  "name": "Cuentos_Italiano",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1344,
+        96
+      ],
+      "id": "1284a425-6b0d-4e88-ba8e-673bbac56150",
+      "name": "Telegram Trigger",
+      "webhookId": "9adf0ea5-5a13-453e-8339-ede4bc8451a6",
+      "disabled": true
+    },
+    {
+      "parameters": {},
+      "type": "@elevenlabs/n8n-nodes-elevenlabs.elevenLabs",
+      "typeVersion": 1,
+      "position": [
+        -64,
+        256
+      ],
+      "id": "d7a4cf7c-9f7d-4386-b3de-ebd26bb415d7",
+      "name": "Convert text to speech",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "sendAudio",
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "binaryData": true,
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        224,
+        192
+      ],
+      "id": "a34b224e-22a7-4334-b8d8-4f7817c5b705",
+      "name": "Send an audio file",
+      "webhookId": "44a6299b-d384-4f6b-b405-22b5377eb813"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "Eres un asistente de ayuda al aprendizaje del idioma italiano en español que crea cuento o breve historia basado en el contexto enviado por el usuario, de ese contexto extrae un tema y contexto\n\nEjecuta los siguientes pasos\n\n1. Saluda correctamente en español y explica que es lo que haces\n\n2. Pide al usuario, en español, que te de un tema y contexto del cual quiere generar un cuento o breve historia, si el contexto es muy simple compleméntelo para lograr algo mas completo, esto lo debes guardar en el campo \"tema\"\n\n3. Usa la herramienta \"Search\" para buscar algún cuento similar al tema requerido por el usuario, en caso de encontrar uno usa los datos de: tema, prompt, cuento, url_audio, preguntas y  para seguir en el flujo\n\n4. En caso que no exista un cuento registrado, con la respuesta del usuario genera un texto con la etiqueta \"prompt\" que especifique claramente el contexto e instrucciones para crear el cuento o historia y úsalo para llamar a la herramienta \"generar cuento\" \n\n5. Con la respuesta de \"generar cuento\"  llama a la herramienta \"Update_db\" con la información del tema, prompt, cuento y preguntas\n\nLas instrucciones del este asistente siempre deben ser en español\n\nOutput\n- Todas las respuestas de este agente deben ser en formato JSON siempre completando todos los campos (mensaje, tema, prompt, cuento, url_audio, preguntas) en caso que no tengas data para estos envia un null\n- El primer campo con la etiqueta \"mensaje\" para las respuestas de mensajería del agente (como el saludo, la petición de información), \n- el \"tema\" ingresado por el usuario\n- el campo con la etiqueta \"prompt\" creado para la generación de la historia\n- otro campo con la etiqueta \"cuento\" para el contenido del cuento o historia\n- el campo url_audio \n- un arreglo de \"preguntas\" para las preguntas de la 1 a la 3 del cuento o historia\n\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        -1088,
+        96
+      ],
+      "id": "a23b614a-2361-43dc-94c4-b83486032fbc",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-4o",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        -1248,
+        288
+      ],
+      "id": "e4e7a135-164d-4171-8f79-46ec8bb517ed",
+      "name": "OpenRouter Chat Model"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8b2eb091-fd7a-440c-8733-608c1df7eab7",
+              "leftValue": "={{ $json.cuento }}",
+              "rightValue": "mensaje",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -512,
+        96
+      ],
+      "id": "f92e7e3c-d52c-44c3-9271-19d88c155d3c",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.mensaje }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "abd7855d-217c-45a2-bd65-1ca219cb4f04",
+      "name": "Send a text message",
+      "webhookId": "d6b9250b-c9da-4416-8436-4e9e317e1f51"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Telegram Trigger').item.json.message.chat.id }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -1072,
+        288
+      ],
+      "id": "620278eb-1568-4b79-acab-d65b4710a5d6",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-4o",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        -1120,
+        592
+      ],
+      "id": "1673076a-2999-42a1-8171-f109edff3181",
+      "name": "OpenRouter Chat Model1"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Agente creador de historias o cuentos en italiano basado en un prompt de entrada",
+        "text": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Prompt__User_Message_', ``, 'string') }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "eres un asistente de estudio de italiano especialista en crear historias o cuentos en italiano\n\nusando el prompt de entrada crea un cuento o historia breve de 80 a 100 palabras en italiano (asegura el largo del resultado)"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 2.2,
+      "position": [
+        -1040,
+        432
+      ],
+      "id": "cb5d2b20-c881-4a48-b309-2e828b81c931",
+      "name": "Generar Cuento"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ JSON.parse($('AI Agent').item.json.output).preguntas }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        432,
+        192
+      ],
+      "id": "893bfede-4497-46f2-8512-f5d3542fa063",
+      "name": "Send a text message1",
+      "webhookId": "ebf19b5f-674b-4415-b512-4b2ca03d7afe"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"cuento\": \"California\",\n\t\"preguntas\": [\"Los Angeles\", \"San Francisco\", \"San Diego\"]\n}",
+        "autoFix": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -848,
+        608
+      ],
+      "id": "0073bd89-f7d2-4800-810d-415d40fd1398",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        -896,
+        752
+      ],
+      "id": "6326a3ce-bc15-42b7-8efa-bfde4507517f",
+      "name": "OpenRouter Chat Model2"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1zNcQRJCHOejRGc4SDYMMLlGfxiKyYjPKrNxQ65CCl2w/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1zNcQRJCHOejRGc4SDYMMLlGfxiKyYjPKrNxQ65CCl2w/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "tema": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('tema__using_to_match_', ``, 'string') }}",
+            "prompt": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('prompt', ``, 'string') }}",
+            "cuento": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('cuento', ``, 'string') }}",
+            "preguntas": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('preguntas', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "tema"
+          ],
+          "schema": [
+            {
+              "id": "tema",
+              "displayName": "tema",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "prompt",
+              "displayName": "prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "cuento",
+              "displayName": "cuento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "preguntas",
+              "displayName": "preguntas",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.6,
+      "position": [
+        -704,
+        272
+      ],
+      "id": "cfc83170-f4d0-4016-9c5b-b4a11a57dbd2",
+      "name": "Update_db"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1zNcQRJCHOejRGc4SDYMMLlGfxiKyYjPKrNxQ65CCl2w/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1zNcQRJCHOejRGc4SDYMMLlGfxiKyYjPKrNxQ65CCl2w/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "tema": "={{ $('If').item.json.tema }}",
+            "url_audio": "={{ $json.webViewLink }}"
+          },
+          "matchingColumns": [
+            "tema"
+          ],
+          "schema": [
+            {
+              "id": "tema",
+              "displayName": "tema",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "prompt",
+              "displayName": "prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "cuento",
+              "displayName": "cuento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "preguntas",
+              "displayName": "preguntas",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "url_audio",
+              "displayName": "url_audio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        432,
+        384
+      ],
+      "id": "dfe6e5f3-a038-4db7-b966-3a6508226c85",
+      "name": "Append or update row in sheet"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1zNcQRJCHOejRGc4SDYMMLlGfxiKyYjPKrNxQ65CCl2w/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1zNcQRJCHOejRGc4SDYMMLlGfxiKyYjPKrNxQ65CCl2w/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "tema",
+              "lookupValue": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('values0_Value', `search similar result`, 'string') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.6,
+      "position": [
+        -832,
+        272
+      ],
+      "id": "901bb4ad-112d-4d06-9d92-4c909230bdac",
+      "name": "Search"
+    },
+    {
+      "parameters": {
+        "name": "={{ $('If').item.json.tema }}",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1pFZLctrkeDJEInaBQl7TiLCK3bMij5ta",
+          "mode": "list",
+          "cachedResultName": "N8n",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1pFZLctrkeDJEInaBQl7TiLCK3bMij5ta"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        224,
+        384
+      ],
+      "id": "f937fee9-14c9-4f36-a9e7-376a3ec57338",
+      "name": "Upload file"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "9eda7260-4e6e-4dfb-a4cd-b9b07d0bdf48",
+              "leftValue": "={{ $json.url_audio }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -304,
+        192
+      ],
+      "id": "dc289afd-8e5a-4068-9ee5-3ad8324584ff",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"mensaje\": \"ingresa el tema\",\n  \"tema\": \"verano in lago de commo\",\n  \"cuento\": \"verano in lago\",\n  \"url_audio\": \"url_audio\",  \n  \"preguntas\": [\"Los Angeles\", \"San Francisco\", \"San Diego\"]\n}",
+        "autoFix": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -592,
+        272
+      ],
+      "id": "4c9f3054-1708-44a6-8453-af782f75e408",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        -480,
+        416
+      ],
+      "id": "d253aac1-5546-4748-aa91-697a75b2aaae",
+      "name": "OpenRouter Chat Model3"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "cabobadilla",
+    "name": "backup-n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-09-07T01:41:05.319Z",
+      "updatedAt": "2025-09-07T01:41:05.319Z",
+      "role": "workflow:owner",
+      "workflowId": "JA9IVtYAjrNvhnCR",
+      "projectId": "EMKC3HvbWexR6hSv"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-09-07T01:41:05.319Z",
+  "versionId": "0417320d-ff4a-4072-8eb0-aa6fcdf32941"
+}
