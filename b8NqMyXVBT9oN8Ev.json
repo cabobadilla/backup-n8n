@@ -1,0 +1,972 @@
+{
+  "active": true,
+  "connections": {
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet1": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "createdAt": "2025-09-07T02:00:14.346Z",
+  "id": "b8NqMyXVBT9oN8Ev",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "pagos",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "pagos",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        16,
+        -160
+      ],
+      "id": "b602c04b-8d3c-4ba8-bbb4-b2c4932b7b3f",
+      "name": "Webhook1",
+      "webhookId": "f55d1f51-086e-4881-84d8-69a0a941a05c"
+    },
+    {
+      "parameters": {
+        "content": "## Crear el Pago",
+        "height": 208,
+        "width": 880,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -48,
+        -224
+      ],
+      "id": "fa7c82b8-faf0-4e89-bb73-54675f887057",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ",
+          "mode": "list",
+          "cachedResultName": "Pedidos_Shopify",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1389542562,
+          "mode": "list",
+          "cachedResultName": "pagos",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ/edit#gid=1389542562"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $json.body.id }}",
+            "gateway": "={{ $json.body.payment_gateway_names[0] }}",
+            "fecha": "={{ DateTime.fromISO($json.body.created_at).toFormat('dd-MM-yyyy HH:mm') }}",
+            "descuento": "={{ $json.body.discount_codes[0].code }}",
+            "valordescuento": "={{ $json.body.discount_codes[0].amount }}",
+            "subtotal": "={{ $json.body.subtotal_price }}",
+            "total": "={{ $json.body.total_price }}",
+            "impuesto": "={{ $json.body.total_tax }}",
+            "precio": "={{ $json.body.line_items[0].price }}",
+            "iva": "={{ $json.body.line_items[0].tax_lines[0].rate }}",
+            "email": "={{ $json.body.email }}",
+            "delivery": "={{ $json.body.current_shipping_price_set.shop_money.amount }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "gateway",
+              "displayName": "gateway",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "fecha",
+              "displayName": "fecha",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "precio",
+              "displayName": "precio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "descuento",
+              "displayName": "descuento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "valordescuento",
+              "displayName": "valordescuento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "delivery",
+              "displayName": "delivery",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "subtotal",
+              "displayName": "subtotal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "iva",
+              "displayName": "iva",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "impuesto",
+              "displayName": "impuesto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "total",
+              "displayName": "total",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        352,
+        -160
+      ],
+      "id": "1b82cb61-e318-4a07-bcd4-042a6325308c",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "lW6DvnVaBFOK8teT",
+          "name": "GoogleSheet_cbobadilla"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ",
+          "mode": "list",
+          "cachedResultName": "Pedidos_Shopify",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1389542562,
+          "mode": "list",
+          "cachedResultName": "pagos",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ/edit#gid=1389542562"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "id",
+              "lookupValue": "={{ $json.body.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        192,
+        96
+      ],
+      "id": "446fdc94-13b7-4262-9c40-d5d8d17b71cf",
+      "name": "Get row(s) in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "lW6DvnVaBFOK8teT",
+          "name": "GoogleSheet_cbobadilla"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "pagosmodif",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -16,
+        96
+      ],
+      "id": "a3014edb-5061-43de-a767-048e4b752406",
+      "name": "Webhook",
+      "webhookId": "f55d1f51-086e-4881-84d8-69a0a941a05c",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Modificar el Pago",
+        "height": 256,
+        "width": 880,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -48,
+        32
+      ],
+      "id": "27d62d74-9c06-4c75-aba2-378ae3b1a3e5",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ",
+          "mode": "list",
+          "cachedResultName": "Pedidos_Shopify",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1389542562,
+          "mode": "list",
+          "cachedResultName": "pagos",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ/edit#gid=1389542562"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $json.id }}",
+            "email": "={{ $json.email }}",
+            "gateway": "={{ $json.gateway }}",
+            "fecha": "={{ $json.fecha }}",
+            "precio": "={{ $json.precio }}",
+            "descuento": "={{ $json.descuento }}",
+            "valordescuento": "={{ $json.valordescuento }}",
+            "subtotal": "={{ $json.subtotal }}",
+            "iva": "={{ $json.iva }}",
+            "impuesto": "={{ $json.impuesto }}",
+            "total": "={{ $json.total }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "gateway",
+              "displayName": "gateway",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fecha",
+              "displayName": "fecha",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "precio",
+              "displayName": "precio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "descuento",
+              "displayName": "descuento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "valordescuento",
+              "displayName": "valordescuento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "subtotal",
+              "displayName": "subtotal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "iva",
+              "displayName": "iva",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "impuesto",
+              "displayName": "impuesto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "total",
+              "displayName": "total",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        400,
+        96
+      ],
+      "id": "5175729c-7771-4c74-817f-bb05cba90fff",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "lW6DvnVaBFOK8teT",
+          "name": "GoogleSheet_cbobadilla"
+        }
+      },
+      "disabled": true
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "Webhook1": [
+      {
+        "json": {
+          "headers": {
+            "host": "primary-production-4c7b.up.railway.app",
+            "user-agent": "Shopify-Captain-Hook",
+            "content-length": "7581",
+            "accept": "*/*",
+            "accept-encoding": "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
+            "content-type": "application/json",
+            "x-forwarded-for": "34.74.36.220",
+            "x-forwarded-host": "primary-production-4c7b.up.railway.app",
+            "x-forwarded-proto": "https",
+            "x-railway-edge": "railway/us-east4-eqdc4a",
+            "x-railway-request-id": "iIoiokbqTySG8i3EBT7zVQ",
+            "x-real-ip": "34.74.36.220",
+            "x-request-start": "1757286335505",
+            "x-shopify-api-version": "unstable",
+            "x-shopify-event-id": "2958bc15-53c0-4ad1-8aa5-4761bb2a0d3c",
+            "x-shopify-hmac-sha256": "UOHrtkbk43oSLJSDcwDpjZQ64OifUDo8kYTvBTwPOgY=",
+            "x-shopify-order-id": "6630129598771",
+            "x-shopify-shop-domain": "pmrcvp-p9.myshopify.com",
+            "x-shopify-test": "true",
+            "x-shopify-topic": "orders/paid",
+            "x-shopify-triggered-at": "2025-09-07T23:05:33.724957176Z",
+            "x-shopify-webhook-id": "bc1240c7-d9eb-406d-936f-f10f97e3257d"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "id": 6630129598771,
+            "admin_graphql_api_id": "gid://shopify/Order/6630129598771",
+            "app_id": 580111,
+            "browser_ip": "200.74.17.118",
+            "buyer_accepts_marketing": true,
+            "cancel_reason": null,
+            "cancelled_at": null,
+            "cart_token": "hWN2iYt4VreNiuBaRIScj3pa",
+            "checkout_id": 39637483192627,
+            "checkout_token": "1dec079005c0431df33faf798a2a6953",
+            "client_details": {
+              "accept_language": "es-CL",
+              "browser_height": null,
+              "browser_ip": "200.74.17.118",
+              "browser_width": null,
+              "session_hash": null,
+              "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36 Edg/139.0.0.0"
+            },
+            "closed_at": null,
+            "confirmation_number": "YHVPXF5CG",
+            "confirmed": true,
+            "contact_email": "creaxxiontv@gmail.com",
+            "created_at": "2025-09-07T20:05:33-03:00",
+            "currency": "CLP",
+            "current_shipping_price_set": {
+              "shop_money": {
+                "amount": "2500",
+                "currency_code": "CLP"
+              },
+              "presentment_money": {
+                "amount": "2500",
+                "currency_code": "CLP"
+              }
+            },
+            "current_subtotal_price": "15000",
+            "current_subtotal_price_set": {
+              "shop_money": {
+                "amount": "15000",
+                "currency_code": "CLP"
+              },
+              "presentment_money": {
+                "amount": "15000",
+                "currency_code": "CLP"
+              }
+            },
+            "current_total_additional_fees_set": null,
+            "current_total_discounts": "0",
+            "current_total_discounts_set": {
+              "shop_money": {
+                "amount": "0",
+                "currency_code": "CLP"
+              },
+              "presentment_money": {
+                "amount": "0",
+                "currency_code": "CLP"
+              }
+            },
+            "current_total_duties_set": null,
+            "current_total_price": "20350",
+            "current_total_price_set": {
+              "shop_money": {
+                "amount": "20350",
+                "currency_code": "CLP"
+              },
+              "presentment_money": {
+                "amount": "20350",
+                "currency_code": "CLP"
+              }
+            },
+            "current_total_tax": "2850",
+            "current_total_tax_set": {
+              "shop_money": {
+                "amount": "2850",
+                "currency_code": "CLP"
+              },
+              "presentment_money": {
+                "amount": "2850",
+                "currency_code": "CLP"
+              }
+            },
+            "customer_locale": "es-CL",
+            "device_id": null,
+            "discount_codes": [],
+            "duties_included": false,
+            "email": "creaxxiontv@gmail.com",
+            "estimated_taxes": false,
+            "financial_status": "paid",
+            "fulfillment_status": null,
+            "landing_site": "/",
+            "landing_site_ref": null,
+            "location_id": null,
+            "merchant_business_entity_id": "28905341235",
+            "merchant_of_record_app_id": null,
+            "name": "1026",
+            "note": null,
+            "note_attributes": [],
+            "number": 26,
+            "order_number": 1026,
+            "order_status_url": "https://pmrcvp-p9.myshopify.com/95616762163/orders/816ad93367eb5df29be4986dc480f7d8/authenticate?key=a69bb37fe8c18a8723684db52d26f397",
+            "original_total_additional_fees_set": null,
+            "original_total_duties_set": null,
+            "payment_gateway_names": [
+              "bogus"
+            ],
+            "phone": null,
+            "po_number": null,
+            "presentment_currency": "CLP",
+            "processed_at": "2025-09-07T20:05:32-03:00",
+            "reference": null,
+            "referring_site": "https://admin.shopify.com/",
+            "source_identifier": null,
+            "source_name": "web",
+            "source_url": null,
+            "subtotal_price": "15000",
+            "subtotal_price_set": {
+              "shop_money": {
+                "amount": "15000",
+                "currency_code": "CLP"
+              },
+              "presentment_money": {
+                "amount": "15000",
+                "currency_code": "CLP"
+              }
+            },
+            "tags": "",
+            "tax_exempt": false,
+            "tax_lines": [
+              {
+                "price": "2850",
+                "rate": 0.19,
+                "title": "VAT",
+                "price_set": {
+                  "shop_money": {
+                    "amount": "2850",
+                    "currency_code": "CLP"
+                  },
+                  "presentment_money": {
+                    "amount": "2850",
+                    "currency_code": "CLP"
+                  }
+                },
+                "channel_liable": false
+              }
+            ],
+            "taxes_included": false,
+            "test": true,
+            "token": "816ad93367eb5df29be4986dc480f7d8",
+            "total_cash_rounding_payment_adjustment_set": {
+              "shop_money": {
+                "amount": "0",
+                "currency_code": "CLP"
+              },
+              "presentment_money": {
+                "amount": "0",
+                "currency_code": "CLP"
+              }
+            },
+            "total_cash_rounding_refund_adjustment_set": {
+              "shop_money": {
+                "amount": "0",
+                "currency_code": "CLP"
+              },
+              "presentment_money": {
+                "amount": "0",
+                "currency_code": "CLP"
+              }
+            },
+            "total_discounts": "0",
+            "total_discounts_set": {
+              "shop_money": {
+                "amount": "0",
+                "currency_code": "CLP"
+              },
+              "presentment_money": {
+                "amount": "0",
+                "currency_code": "CLP"
+              }
+            },
+            "total_line_items_price": "15000",
+            "total_line_items_price_set": {
+              "shop_money": {
+                "amount": "15000",
+                "currency_code": "CLP"
+              },
+              "presentment_money": {
+                "amount": "15000",
+                "currency_code": "CLP"
+              }
+            },
+            "total_outstanding": "0",
+            "total_price": "20350",
+            "total_price_set": {
+              "shop_money": {
+                "amount": "20350",
+                "currency_code": "CLP"
+              },
+              "presentment_money": {
+                "amount": "20350",
+                "currency_code": "CLP"
+              }
+            },
+            "total_shipping_price_set": {
+              "shop_money": {
+                "amount": "2500",
+                "currency_code": "CLP"
+              },
+              "presentment_money": {
+                "amount": "2500",
+                "currency_code": "CLP"
+              }
+            },
+            "total_tax": "2850",
+            "total_tax_set": {
+              "shop_money": {
+                "amount": "2850",
+                "currency_code": "CLP"
+              },
+              "presentment_money": {
+                "amount": "2850",
+                "currency_code": "CLP"
+              }
+            },
+            "total_tip_received": "0",
+            "total_weight": 1000,
+            "updated_at": "2025-09-07T20:05:34-03:00",
+            "user_id": null,
+            "billing_address": {
+              "first_name": "mauricio",
+              "address1": "MONJITAS",
+              "phone": null,
+              "city": "SANTIAGO",
+              "zip": null,
+              "province": "Santiago",
+              "country": "Chile",
+              "last_name": "vidal",
+              "address2": "100",
+              "company": null,
+              "latitude": -33.4365871,
+              "longitude": -70.6443676,
+              "name": "mauricio vidal",
+              "country_code": "CL",
+              "province_code": "RM"
+            },
+            "customer": {
+              "id": 9211947745587,
+              "created_at": "2025-09-06T11:38:16-04:00",
+              "updated_at": "2025-09-07T20:05:33-03:00",
+              "first_name": "mauricio",
+              "last_name": "vidal",
+              "state": "disabled",
+              "note": null,
+              "verified_email": true,
+              "multipass_identifier": null,
+              "tax_exempt": false,
+              "email": "creaxxiontv@gmail.com",
+              "phone": null,
+              "currency": "CLP",
+              "tax_exemptions": [],
+              "admin_graphql_api_id": "gid://shopify/Customer/9211947745587",
+              "default_address": {
+                "id": 11045903204659,
+                "customer_id": 9211947745587,
+                "first_name": "mauricio",
+                "last_name": "vidal",
+                "company": null,
+                "address1": "MONJITAS",
+                "address2": "100",
+                "city": "SANTIAGO",
+                "province": "Santiago",
+                "country": "Chile",
+                "zip": null,
+                "phone": null,
+                "name": "mauricio vidal",
+                "province_code": "RM",
+                "country_code": "CL",
+                "country_name": "Chile",
+                "default": true
+              }
+            },
+            "discount_applications": [],
+            "fulfillments": [],
+            "line_items": [
+              {
+                "id": 16303307686195,
+                "admin_graphql_api_id": "gid://shopify/LineItem/16303307686195",
+                "attributed_staffs": [],
+                "current_quantity": 1,
+                "fulfillable_quantity": 1,
+                "fulfillment_service": "manual",
+                "fulfillment_status": null,
+                "gift_card": false,
+                "grams": 1000,
+                "name": "pos",
+                "price": "15000",
+                "price_set": {
+                  "shop_money": {
+                    "amount": "15000",
+                    "currency_code": "CLP"
+                  },
+                  "presentment_money": {
+                    "amount": "15000",
+                    "currency_code": "CLP"
+                  }
+                },
+                "product_exists": true,
+                "product_id": 9857285980467,
+                "properties": [],
+                "quantity": 1,
+                "requires_shipping": true,
+                "sales_line_item_group_id": null,
+                "sku": null,
+                "taxable": true,
+                "title": "pos",
+                "total_discount": "0",
+                "total_discount_set": {
+                  "shop_money": {
+                    "amount": "0",
+                    "currency_code": "CLP"
+                  },
+                  "presentment_money": {
+                    "amount": "0",
+                    "currency_code": "CLP"
+                  }
+                },
+                "variant_id": 52353733951795,
+                "variant_inventory_management": "shopify",
+                "variant_title": null,
+                "vendor": "Dev-MKVibeStore",
+                "tax_lines": [
+                  {
+                    "channel_liable": false,
+                    "price": "2850",
+                    "price_set": {
+                      "shop_money": {
+                        "amount": "2850",
+                        "currency_code": "CLP"
+                      },
+                      "presentment_money": {
+                        "amount": "2850",
+                        "currency_code": "CLP"
+                      }
+                    },
+                    "rate": 0.19,
+                    "title": "VAT"
+                  }
+                ],
+                "duties": [],
+                "discount_allocations": []
+              }
+            ],
+            "payment_terms": null,
+            "refunds": [],
+            "shipping_address": {
+              "first_name": "mauricio",
+              "address1": "MONJITAS",
+              "phone": null,
+              "city": "SANTIAGO",
+              "zip": null,
+              "province": "Santiago",
+              "country": "Chile",
+              "last_name": "vidal",
+              "address2": "100",
+              "company": null,
+              "latitude": -33.4365871,
+              "longitude": -70.6443676,
+              "name": "mauricio vidal",
+              "country_code": "CL",
+              "province_code": "RM"
+            },
+            "shipping_lines": [
+              {
+                "id": 5281404387635,
+                "carrier_identifier": null,
+                "code": "Plana Santiago",
+                "current_discounted_price_set": {
+                  "shop_money": {
+                    "amount": "2500",
+                    "currency_code": "CLP"
+                  },
+                  "presentment_money": {
+                    "amount": "2500",
+                    "currency_code": "CLP"
+                  }
+                },
+                "discounted_price": "2500",
+                "discounted_price_set": {
+                  "shop_money": {
+                    "amount": "2500",
+                    "currency_code": "CLP"
+                  },
+                  "presentment_money": {
+                    "amount": "2500",
+                    "currency_code": "CLP"
+                  }
+                },
+                "is_removed": false,
+                "phone": null,
+                "price": "2500",
+                "price_set": {
+                  "shop_money": {
+                    "amount": "2500",
+                    "currency_code": "CLP"
+                  },
+                  "presentment_money": {
+                    "amount": "2500",
+                    "currency_code": "CLP"
+                  }
+                },
+                "requested_fulfillment_service_id": null,
+                "source": "shopify",
+                "title": "Plana Santiago",
+                "tax_lines": [],
+                "discount_allocations": []
+              }
+            ],
+            "returns": [],
+            "line_item_groups": []
+          },
+          "webhookUrl": "https://primary-production-4c7b.up.railway.app/webhook-test/pagos",
+          "executionMode": "test"
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "cabobadilla",
+    "name": "backup-n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-09-07T02:00:14.346Z",
+      "updatedAt": "2025-09-07T02:00:14.346Z",
+      "role": "workflow:owner",
+      "workflowId": "b8NqMyXVBT9oN8Ev",
+      "projectId": "EMKC3HvbWexR6hSv"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-09-07T23:14:12.315Z",
+  "versionId": "af2a9f34-ae64-4933-8428-e88aecae499e"
+}
