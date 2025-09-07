@@ -1,0 +1,209 @@
+{
+  "active": true,
+  "connections": {
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet1": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet2": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-06T22:04:10.013Z",
+  "id": "nrMcVoPo3S6fIoRt",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Consulta Ventas Promotor",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "f55d1f51-086e-4881-84d8-69a0a941a05c",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -64,
+        -16
+      ],
+      "id": "5a3eee8b-b49e-4de7-b463-c04745f26c8d",
+      "name": "Webhook1",
+      "webhookId": "f55d1f51-086e-4881-84d8-69a0a941a05c"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        576,
+        -16
+      ],
+      "id": "f9c0dae5-c9d8-4b19-9d09-4daa1a69d2d6",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ",
+          "mode": "list",
+          "cachedResultName": "Pedidos_Shopify",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1017784514,
+          "mode": "list",
+          "cachedResultName": "Promotores",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ/edit#gid=1017784514"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "correo",
+              "lookupValue": "={{ $json.query.email }}"
+            },
+            {
+              "lookupColumn": "codigo",
+              "lookupValue": "={{ $json.query.password }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        144,
+        -16
+      ],
+      "id": "4cf58973-b553-434e-9ec5-692264e5a977",
+      "name": "Get row(s) in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "lW6DvnVaBFOK8teT",
+          "name": "GoogleSheet_cbobadilla"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ",
+          "mode": "list",
+          "cachedResultName": "Pedidos_Shopify",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "discount_code",
+              "lookupValue": "={{ $json.coddescuento }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        352,
+        -16
+      ],
+      "id": "5fa35dc4-1f16-47a5-9f90-4671344f8913",
+      "name": "Get row(s) in sheet2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "lW6DvnVaBFOK8teT",
+          "name": "GoogleSheet_cbobadilla"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Mis Ventas",
+        "height": 256,
+        "width": 880,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -96,
+        -80
+      ],
+      "id": "009842bd-cfe1-4ebb-b737-6d466b93e887",
+      "name": "Sticky Note2"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "cabobadilla",
+    "name": "backup-n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-09-06T22:04:10.013Z",
+      "updatedAt": "2025-09-06T22:04:10.013Z",
+      "role": "workflow:owner",
+      "workflowId": "nrMcVoPo3S6fIoRt",
+      "projectId": "EMKC3HvbWexR6hSv"
+    }
+  ],
+  "staticData": {
+    "node:Google Sheets Trigger": {
+      "documentId": "1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ",
+      "sheetId": 0,
+      "lastRevision": 60,
+      "lastRevisionLink": "https://docs.google.com/spreadsheets/export?id=1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ&revision=60&exportFormat=xlsx"
+    }
+  },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-09-06T22:05:26.247Z",
+  "versionId": "4c04cb05-d1a0-4e75-8665-375d373bc87e"
+}
