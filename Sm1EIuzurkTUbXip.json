@@ -1,0 +1,328 @@
+{
+  "active": false,
+  "connections": {
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Replace Me",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replace Me": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-06T22:03:17.919Z",
+  "id": "Sm1EIuzurkTUbXip",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Notificaciones",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ",
+          "mode": "list",
+          "cachedResultName": "Pedidos_Shopify",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ/edit#gid=0"
+        },
+        "event": "rowUpdate",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -288,
+        -32
+      ],
+      "id": "414597ae-2b3b-4981-9b8d-9c146ef01c03",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "Mz8CvJlTeGvjoL2R",
+          "name": "Google Sheets Trigger"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.correo }}",
+        "subject": "Orden Actualizada",
+        "message": "=Se ha actualizado la {{ $('If').item.json.orden }} del cliente {{ $('If').item.json.name }} por un total  de {{ $('If').item.json.total }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        704,
+        0
+      ],
+      "id": "bf374d2e-dc5e-48b3-98f1-48eba56eb9b9",
+      "name": "Send a message",
+      "webhookId": "b70f2ce9-73f1-453c-ad36-184c599d8a64",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "tNYYAhg6uSC2xSn8",
+          "name": "Gmail cbobadilla"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Notificacion de Venta por Promotor",
+        "height": 336,
+        "width": 1200,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -336,
+        -112
+      ],
+      "id": "059f6902-a58d-4546-aa7e-56f86eff5452",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ",
+          "mode": "list",
+          "cachedResultName": "Pedidos_Shopify",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1017784514,
+          "mode": "list",
+          "cachedResultName": "Promotores",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ/edit#gid=1017784514"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "coddescuento",
+              "lookupValue": "={{ $json.discount_code }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        512,
+        -80
+      ],
+      "id": "4e66b2c8-8409-4edf-bc08-2b43918058b9",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "lW6DvnVaBFOK8teT",
+          "name": "GoogleSheet_cbobadilla"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -80,
+        -32
+      ],
+      "id": "818cc339-b50c-4ed6-aa69-c1121bb2ffe6",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "name": "Replace Me",
+      "typeVersion": 1,
+      "position": [
+        128,
+        -16
+      ],
+      "id": "d672616e-aa2f-4269-9886-6de16440d32b"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6e0d207e-3381-4cdb-9eec-ac8e812a58d0",
+              "leftValue": "={{ $json.discount_code }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        272,
+        -16
+      ],
+      "id": "65c52d75-ae5e-4456-9b08-d1f5dbe215cc",
+      "name": "If"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "Google Sheets Trigger": [
+      {
+        "json": {
+          "email": "creaxxiontv@gmail.com",
+          "orden": 1011,
+          "name": "mauricio vidal",
+          "precio": 6520,
+          "descuento": "",
+          "discount_code": "",
+          "total": 6520,
+          "estado": true,
+          "fechapedido": "2025-09-06T16:55:33-04:00"
+        }
+      },
+      {
+        "json": {
+          "email": "creaxxiontv@gmail.com",
+          "orden": 1013,
+          "name": "mauricio vidal",
+          "precio": 6520,
+          "descuento": 652,
+          "discount_code": "M10",
+          "total": 5868,
+          "estado": true,
+          "fechapedido": "2025-09-06T17:16:38-04:00"
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "cabobadilla",
+    "name": "backup-n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-09-06T22:03:17.919Z",
+      "updatedAt": "2025-09-06T22:03:17.919Z",
+      "role": "workflow:owner",
+      "workflowId": "Sm1EIuzurkTUbXip",
+      "projectId": "EMKC3HvbWexR6hSv"
+    }
+  ],
+  "staticData": {
+    "node:Google Sheets Trigger": {
+      "documentId": "1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ",
+      "sheetId": 0,
+      "lastRevision": 60,
+      "lastRevisionLink": "https://docs.google.com/spreadsheets/export?id=1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ&revision=60&exportFormat=xlsx"
+    }
+  },
+  "tags": [],
+  "triggerCount": 3,
+  "updatedAt": "2025-09-06T22:05:01.922Z",
+  "versionId": "739a9178-9d53-4a1b-b836-3abb4f7c6e6e"
+}
