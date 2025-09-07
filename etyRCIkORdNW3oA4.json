@@ -1,0 +1,289 @@
+{
+  "active": false,
+  "connections": {
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "the_search": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Append a block",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-07T01:41:36.369Z",
+  "id": "etyRCIkORdNW3oA4",
+  "isArchived": false,
+  "meta": null,
+  "name": "KnowledgeCapsule",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=Role\nYou are a Knowledge Capsule Curator that creates educational learning packages on any topic.\n\nTask\nGet the topic to research from the user\nPrepare a prompt to use \"the_search\" tool to gather information about the topic (overview, examples, key_topics, content and youtube videos)\nCreate a knowledge capsule with a clear overview, examples or uses, key_topics to learn and 2-3 YouTube videos links\n\nRules\nPrepare the output to be used in Telegram node\nUse markdown format for the output\n\nError Handling\nIf no topic provided: Ask for clarification\nIf search fails: Inform user and request retry\nIf insufficient information: Work with available data and note limitations\n\nStyle\nProfessional and educational tone\nClear, accessible language\nFocus on practical learning value\nIf the user request in spanish answer and generate conten in spanish"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        -480,
+        64
+      ],
+      "id": "addad1fa-9a1a-4e2d-804d-e48a2cd751fc",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-4o-mini",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        -592,
+        288
+      ],
+      "id": "d15a3612-f694-4557-aad9-6f8e0d4e2c30",
+      "name": "OpenRouter Chat Model"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Telegram Trigger').item.json.message.chat.id }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -432,
+        288
+      ],
+      "id": "c76230e4-ffe7-4613-9f89-d1daed61d145",
+      "name": "Simple Memory",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "search tool in perplexity getting the content and youtube videos about a ket topic",
+        "model": "sonar-pro",
+        "messages": {
+          "message": [
+            {
+              "content": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('message0_Text', ``, 'string') }}"
+            }
+          ]
+        },
+        "simplify": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Simplify_Output', ``, 'boolean') }}",
+        "options": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.perplexityTool",
+      "typeVersion": 1,
+      "position": [
+        -288,
+        288
+      ],
+      "id": "79b1a211-1021-44eb-a4ba-5a96611a8e9f",
+      "name": "the_search"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -736,
+        64
+      ],
+      "id": "658a0e09-52d1-46d7-9745-d9ed874e9095",
+      "name": "Telegram Trigger",
+      "webhookId": "d43cd067-c931-4b27-b648-d1093eea1f67"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "375e8380-49dc-4c21-ae8c-c3d6e13ca65f",
+      "name": "Send a text message",
+      "webhookId": "8a1b2a8f-b52f-4673-a28f-262fd7f90a58"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "447a3943-0019-4982-a56d-7aee7e7a6857",
+              "leftValue": "={{ $json.output }}",
+              "rightValue": "Resumen",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "b9f7c504-0660-4516-9300-91246f7eaafe",
+              "leftValue": "={{ $json.output }}",
+              "rightValue": "Overview",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "b6ff3767-bae3-47a7-92df-53a9479d2175",
+              "leftValue": "={{ $json.output }}",
+              "rightValue": "Video",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        176
+      ],
+      "id": "f26e98cd-7c3b-4af2-8cb6-9ec122b00d0a",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "resource": "block",
+        "blockId": {
+          "__rl": true,
+          "value": "https://www.notion.so/chrisbob/Capsules-2518f2bcca3e807c9985c6e54e18c8ec?source=copy_link#2518f2bcca3e802eb505d12994e03332",
+          "mode": "url"
+        },
+        "blockUi": {
+          "blockValues": [
+            {
+              "textContent": "={{ $json.output }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        240,
+        112
+      ],
+      "id": "41d91bc7-6f6b-4beb-8778-a3b501a7cbfe",
+      "name": "Append a block"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "cabobadilla",
+    "name": "backup-n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-09-07T01:41:36.369Z",
+      "updatedAt": "2025-09-07T01:41:36.369Z",
+      "role": "workflow:owner",
+      "workflowId": "etyRCIkORdNW3oA4",
+      "projectId": "EMKC3HvbWexR6hSv"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-09-07T01:41:36.369Z",
+  "versionId": "872370cf-3ac1-4661-8c69-e632d85927ac"
+}
