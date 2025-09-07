@@ -1,0 +1,786 @@
+{
+  "active": false,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Insert or update rows in a table",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Replace Me",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replace Me": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet1": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet2": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-06T20:26:54.235Z",
+  "id": "0ZRpMSIQVL5lxNF5",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "pedidos_ok",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "pedidos",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -544,
+        -64
+      ],
+      "id": "f54c08cd-9949-4bdd-b374-4965dc19f349",
+      "name": "Webhook",
+      "webhookId": "3ac6e0a6-7a3a-4221-89cc-6108598e7f66"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "deba5316-dfb0-4dc1-a200-35e1464e6cad",
+              "name": "email",
+              "value": "={{ $json.body.contact_email }}",
+              "type": "string"
+            },
+            {
+              "id": "68d8ff6b-f603-4fbc-8a62-b800e35f3aad",
+              "name": "orden",
+              "value": "={{ $json.body.order_number }}",
+              "type": "number"
+            },
+            {
+              "id": "563d55b1-8e84-4709-90ae-6da57c031986",
+              "name": "name",
+              "value": "={{ $json.body.customer.first_name }} {{ $json.body.customer.last_name }}",
+              "type": "string"
+            },
+            {
+              "id": "516df8ff-be80-4114-a1de-f2758987537c",
+              "name": "precio",
+              "value": "={{ $json.body.total_line_items_price }}",
+              "type": "string"
+            },
+            {
+              "id": "2e2e575e-af79-432e-b996-bfeb11d94ef2",
+              "name": "descuento",
+              "value": "={{ $json.body.current_total_discounts }}",
+              "type": "string"
+            },
+            {
+              "id": "2ed1a509-dca3-49f9-bac1-3b3cb5fa1aef",
+              "name": "total",
+              "value": "={{ $json.body.current_subtotal_price }}",
+              "type": "string"
+            },
+            {
+              "id": "b8b616bb-9a05-42d6-a37b-7135493c8ecd",
+              "name": "discount_code",
+              "value": "={{ $json.body.discount_codes[0].code }}",
+              "type": "string"
+            },
+            {
+              "id": "b1b9e8cc-e7b8-4073-b07f-321a2380b22a",
+              "name": "estado",
+              "value": "={{ $json.body.confirmed }}",
+              "type": "boolean"
+            },
+            {
+              "id": "391ce139-c4b6-46fb-b0ce-f251ab594c63",
+              "name": "fechapedido",
+              "value": "={{ $json.body.processed_at }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -320,
+        -64
+      ],
+      "id": "a9413c55-6a31-44ac-aa41-9532a9ca1b3e",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "table": {
+          "__rl": true,
+          "value": "pedidos",
+          "mode": "list",
+          "cachedResultName": "pedidos"
+        },
+        "columnToMatchOn": "orden",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 2.5,
+      "position": [
+        -32,
+        128
+      ],
+      "id": "d9b9924c-52dc-48f5-ae37-a5c43232e9ce",
+      "name": "Insert or update rows in a table",
+      "credentials": {
+        "mySql": {
+          "id": "oCO7MmY0ac1eSlL8",
+          "name": "SHINKANSEN"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ",
+          "mode": "list",
+          "cachedResultName": "Pedidos_Shopify",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "orden": "={{ $json.orden }}",
+            "email": "={{ $json.email }}",
+            "name": "={{ $json.name }}",
+            "precio": "={{ $json.precio }}",
+            "descuento": "={{ $json.descuento }}",
+            "discount_code": "={{ $json.discount_code }}",
+            "total": "={{ $json.total }}",
+            "estado": "={{ $json.estado }}",
+            "fechapedido": "={{ $json.fechapedido }}"
+          },
+          "matchingColumns": [
+            "orden"
+          ],
+          "schema": [
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "orden",
+              "displayName": "orden",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "precio",
+              "displayName": "precio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "descuento",
+              "displayName": "descuento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "discount_code",
+              "displayName": "discount_code",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "total",
+              "displayName": "total",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "estado",
+              "displayName": "estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fechapedido",
+              "displayName": "fechapedido",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -32,
+        -96
+      ],
+      "id": "d805b554-892b-4e47-a2c9-50d402bb0227",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "lW6DvnVaBFOK8teT",
+          "name": "GoogleSheet_cbobadilla"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Pedidos",
+        "height": 544,
+        "width": 832
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -576,
+        -144
+      ],
+      "id": "9ab02b0a-51cc-42a5-95a6-be646320c3a3",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ",
+          "mode": "list",
+          "cachedResultName": "Pedidos_Shopify",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ/edit#gid=0"
+        },
+        "event": "rowUpdate",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        384,
+        -64
+      ],
+      "id": "2c30ad59-faf3-4e1b-9e1c-9e8944df6380",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "Mz8CvJlTeGvjoL2R",
+          "name": "Google Sheets Trigger"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.correo }}",
+        "subject": "Orden Actualizada",
+        "message": "=Se ha actualizado la {{ $('If').item.json.orden }} del cliente {{ $('If').item.json.name }} por un total  de {{ $('If').item.json.total }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1376,
+        -32
+      ],
+      "id": "b77d42fe-ac38-4d77-810b-6e706bcae215",
+      "name": "Send a message",
+      "webhookId": "a3cfa563-08b6-4513-881e-bf3b13e85016",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "tNYYAhg6uSC2xSn8",
+          "name": "Gmail cbobadilla"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Notificacion de Venta por Promotor",
+        "height": 336,
+        "width": 1200,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        336,
+        -144
+      ],
+      "id": "395e975c-9d02-448b-9f66-e094a05fea60",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ",
+          "mode": "list",
+          "cachedResultName": "Pedidos_Shopify",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1017784514,
+          "mode": "list",
+          "cachedResultName": "Promotores",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ/edit#gid=1017784514"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "coddescuento",
+              "lookupValue": "={{ $json.discount_code }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1184,
+        -112
+      ],
+      "id": "2f74e0ce-a7cf-4e57-8830-8538542d8ad5",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "lW6DvnVaBFOK8teT",
+          "name": "GoogleSheet_cbobadilla"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        592,
+        -64
+      ],
+      "id": "767988db-28f2-407e-a0da-8fbc0a6d9ed8",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "name": "Replace Me",
+      "typeVersion": 1,
+      "position": [
+        800,
+        -48
+      ],
+      "id": "5a49161e-9226-40e8-95b8-076ff62c00a0"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6e0d207e-3381-4cdb-9eec-ac8e812a58d0",
+              "leftValue": "={{ $json.discount_code }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        944,
+        -48
+      ],
+      "id": "fcef988e-7981-46fc-9460-001775181965",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        368,
+        304
+      ],
+      "id": "b5202851-5c1a-4638-9253-12587ed9a5ee",
+      "name": "Webhook1",
+      "webhookId": "94b4b482-fb7d-4018-9ccc-0b0b8e2a9579"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1008,
+        304
+      ],
+      "id": "313ed54d-bbcf-4d7f-b506-9a747986e8b7",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ",
+          "mode": "list",
+          "cachedResultName": "Pedidos_Shopify",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1017784514,
+          "mode": "list",
+          "cachedResultName": "Promotores",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ/edit#gid=1017784514"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "correo",
+              "lookupValue": "={{ $json.query.email }}"
+            },
+            {
+              "lookupColumn": "codigo",
+              "lookupValue": "={{ $json.query.password }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        576,
+        304
+      ],
+      "id": "2fdb2c88-03d1-4643-962e-b854281ea0d8",
+      "name": "Get row(s) in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "lW6DvnVaBFOK8teT",
+          "name": "GoogleSheet_cbobadilla"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ",
+          "mode": "list",
+          "cachedResultName": "Pedidos_Shopify",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "discount_code",
+              "lookupValue": "={{ $json.coddescuento }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        784,
+        304
+      ],
+      "id": "96b843ba-dcd8-4585-8821-e104720d5730",
+      "name": "Get row(s) in sheet2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "lW6DvnVaBFOK8teT",
+          "name": "GoogleSheet_cbobadilla"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Mis Ventas",
+        "height": 256,
+        "width": 880,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        336,
+        240
+      ],
+      "id": "56450020-be99-450b-a602-5f40dcee994b",
+      "name": "Sticky Note2"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "Google Sheets Trigger": [
+      {
+        "json": {
+          "email": "creaxxiontv@gmail.com",
+          "orden": 1011,
+          "name": "mauricio vidal",
+          "precio": 6520,
+          "descuento": "",
+          "discount_code": "",
+          "total": 6520,
+          "estado": true,
+          "fechapedido": "2025-09-06T16:55:33-04:00"
+        }
+      },
+      {
+        "json": {
+          "email": "creaxxiontv@gmail.com",
+          "orden": 1013,
+          "name": "mauricio vidal",
+          "precio": 6520,
+          "descuento": 652,
+          "discount_code": "M10",
+          "total": 5868,
+          "estado": true,
+          "fechapedido": "2025-09-06T17:16:38-04:00"
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "cabobadilla",
+    "name": "backup-n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-09-06T20:26:54.235Z",
+      "updatedAt": "2025-09-06T20:26:54.235Z",
+      "role": "workflow:owner",
+      "workflowId": "0ZRpMSIQVL5lxNF5",
+      "projectId": "EMKC3HvbWexR6hSv"
+    }
+  ],
+  "staticData": {
+    "node:Google Sheets Trigger": {
+      "documentId": "1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ",
+      "sheetId": 0,
+      "lastRevision": 60,
+      "lastRevisionLink": "https://docs.google.com/spreadsheets/export?id=1T7pXdCCMdTHrqXnn8d_MQ2snn1kT3AtzVgZ-phzwcvQ&revision=60&exportFormat=xlsx"
+    }
+  },
+  "tags": [],
+  "triggerCount": 3,
+  "updatedAt": "2025-09-06T22:04:52.778Z",
+  "versionId": "c986fc93-a657-444d-ac40-f170ae3ceffe"
+}
