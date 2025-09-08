@@ -1,0 +1,142 @@
+{
+  "createdAt": "2025-09-06T22:12:53.293Z",
+  "updatedAt": "2025-09-06T22:12:53.293Z",
+  "id": "QIS7cN4m6RcWcDnf",
+  "name": "My workflow",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Venta por Promotor\nCrear un Google Sheet con las ventas del Promotor y enviarle el link",
+        "width": 512
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -432,
+        -224
+      ],
+      "id": "42ddd6de-e425-426b-bd91-f3bd695adf77",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "1 pedid datos del promotor\n2 validarlos\n3 rescatar las ventas\n4 crear un google sheet con ventas a la fecha\n5 compartir el google sheet con promotor gmail\n6 enviar por correo el link",
+        "height": 208,
+        "width": 512
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        -16
+      ],
+      "id": "0b19ebc0-7692-4163-a328-d3b170e9a344",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "9bddea3b-090c-4302-a6c3-4027cdacb69e",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        144,
+        -160
+      ],
+      "id": "f6ed169f-6706-40ab-8285-d87a7149f024",
+      "name": "Webhook",
+      "webhookId": "9bddea3b-090c-4302-a6c3-4027cdacb69e"
+    },
+    {
+      "parameters": {
+        "resource": "spreadsheet",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        432,
+        -160
+      ],
+      "id": "9a07df4a-a5c0-4f7d-98fc-5fe8b8ec5305",
+      "name": "Create spreadsheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "lW6DvnVaBFOK8teT",
+          "name": "GoogleSheet_cbobadilla"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "preBuiltAgentsCalloutGoogleDrive": "",
+        "authentication": "oAuth2",
+        "resource": "file",
+        "operation": "share",
+        "fileId": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "permissionsUi": {},
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        768,
+        -160
+      ],
+      "id": "745a70d1-5122-4d63-b407-c1591e6132e2",
+      "name": "Share file"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Create spreadsheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create spreadsheet": {
+      "main": [
+        [
+          {
+            "node": "Share file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "9e294813-e989-4479-a51c-bea0397e379d",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-09-06T22:12:53.293Z",
+      "updatedAt": "2025-09-06T22:12:53.293Z",
+      "role": "workflow:owner",
+      "workflowId": "QIS7cN4m6RcWcDnf",
+      "projectId": "EMKC3HvbWexR6hSv"
+    }
+  ],
+  "tags": []
+}
