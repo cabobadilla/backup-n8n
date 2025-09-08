@@ -1,0 +1,1602 @@
+{
+  "createdAt": "2025-09-07T12:02:27.105Z",
+  "updatedAt": "2025-09-07T16:21:53.231Z",
+  "id": "nuQso1Mrt77Ezdww",
+  "name": "Bckp_Ref",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "mode": "jsonToBinary",
+        "options": {
+          "fileName": "=file",
+          "useRawData": true
+        }
+      },
+      "id": "ed2e532b-47ec-430c-80d5-99bf41155e18",
+      "name": "Move Binary Data",
+      "type": "n8n-nodes-base.moveBinaryData",
+      "position": [
+        -4560,
+        -416
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "1ccd989d-1b87-4f93-bc76-a887d8f8ba39",
+      "name": "Loop Over Items",
+      "type": "n8n-nodes-base.splitInBatches",
+      "position": [
+        -8336,
+        -416
+      ],
+      "typeVersion": 3
+    },
+    {
+      "parameters": {
+        "operation": "binaryToPropery",
+        "options": {}
+      },
+      "id": "0cd76908-64e1-4421-87be-89714df0d13d",
+      "name": "Extract from File",
+      "type": "n8n-nodes-base.extractFromFile",
+      "position": [
+        -4336,
+        -416
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "mode": "list",
+          "value": "appPFFj6CUUhZyDPT",
+          "cachedResultUrl": "https://airtable.com/appPFFj6CUUhZyDPT",
+          "cachedResultName": "n8n workflows backup (template)"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "list",
+          "value": "tblavE6Zl51smbyGV",
+          "cachedResultUrl": "https://airtable.com/appSYKqZwWcxbEdKq/tblavE6Zl51smbyGV",
+          "cachedResultName": "Snapshots"
+        },
+        "filterByFormula": "={Workflow ID} = '{{ $('Loop Over Items').item.json.id }}'",
+        "options": {}
+      },
+      "id": "ed796a99-15d1-418a-b992-e3f1297f4dca",
+      "name": "Search all snapshots",
+      "type": "n8n-nodes-base.airtable",
+      "position": [
+        -7792,
+        -416
+      ],
+      "typeVersion": 2.1,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ JSON.stringify($('Loop Over Items').first().json, null, 2) }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=Your role is to return a 1 sentence description of what the n8n workflow provided by the user does. You have a deep understanding of how n8n works.\n\nExample shapes of 1-sentence summaries:\nSummarises incoming product feedback from the form or as a subworkflow and sends it to Slack in #general before storing the summary in Airtable and Drive.\nTriggers on a new Gmail message, downloads the PDF attachment, converts it to base64, and uploads it to a Google Drive folder while saving metadata in Airtable.\nDetects new successful Stripe payments, retrieves customer details, creates a HubSpot contact, and sends a templated welcome email via SendGrid."
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "id": "0b1cfa61-d9fa-4db4-a6c4-f68813061aa0",
+      "name": "Re-summarise workflow",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "position": [
+        -5584,
+        -736
+      ],
+      "typeVersion": 1.7
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "mode": "list",
+          "value": "appPFFj6CUUhZyDPT",
+          "cachedResultUrl": "https://airtable.com/appPFFj6CUUhZyDPT",
+          "cachedResultName": "n8n workflows backup (template)"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "list",
+          "value": "tblfjTaQd9nnVt9WP",
+          "cachedResultUrl": "https://airtable.com/appSYKqZwWcxbEdKq/tblfjTaQd9nnVt9WP",
+          "cachedResultName": "Workflows"
+        },
+        "columns": {
+          "value": {
+            "AI summary": "={{ $json.text }}",
+            "Airtable record ID": "={{ $('Create or update workflow').first().json.id }}"
+          },
+          "schema": [
+            {
+              "id": "id",
+              "type": "string",
+              "display": true,
+              "removed": true,
+              "readOnly": true,
+              "required": false,
+              "displayName": "id",
+              "defaultMatch": true
+            },
+            {
+              "id": "Workflow name",
+              "type": "string",
+              "display": true,
+              "removed": true,
+              "readOnly": false,
+              "required": false,
+              "displayName": "Workflow name",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Workflow ID",
+              "type": "string",
+              "display": true,
+              "removed": true,
+              "readOnly": false,
+              "required": false,
+              "displayName": "Workflow ID",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Open in n8n",
+              "type": "string",
+              "display": true,
+              "removed": true,
+              "readOnly": true,
+              "required": false,
+              "displayName": "Open in n8n",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "AI summary",
+              "type": "string",
+              "display": true,
+              "removed": false,
+              "readOnly": false,
+              "required": false,
+              "displayName": "AI summary",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Snapshots",
+              "type": "array",
+              "display": true,
+              "removed": true,
+              "readOnly": false,
+              "required": false,
+              "displayName": "Snapshots",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Snapshots count",
+              "type": "string",
+              "display": true,
+              "removed": true,
+              "readOnly": true,
+              "required": false,
+              "displayName": "Snapshots count",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Last snapshot version ID",
+              "type": "string",
+              "display": true,
+              "removed": true,
+              "readOnly": true,
+              "required": false,
+              "displayName": "Last snapshot version ID",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Last update time",
+              "type": "string",
+              "display": true,
+              "removed": true,
+              "readOnly": true,
+              "required": false,
+              "displayName": "Last update time",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Last version file",
+              "type": "string",
+              "display": true,
+              "removed": true,
+              "readOnly": true,
+              "required": false,
+              "displayName": "Last version file",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Comment",
+              "type": "string",
+              "display": true,
+              "removed": true,
+              "readOnly": false,
+              "required": false,
+              "displayName": "Comment",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Creation time",
+              "type": "dateTime",
+              "display": true,
+              "removed": true,
+              "readOnly": false,
+              "required": false,
+              "displayName": "Creation time",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Airtable record ID",
+              "type": "string",
+              "display": true,
+              "removed": false,
+              "readOnly": true,
+              "required": false,
+              "displayName": "Airtable record ID",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            }
+          ],
+          "mappingMode": "defineBelow",
+          "matchingColumns": [
+            "Airtable record ID"
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "9d4403d6-526b-41b1-bad5-cbe01c4483fa",
+      "name": "Store new workflow summary",
+      "type": "n8n-nodes-base.airtable",
+      "position": [
+        -5232,
+        -736
+      ],
+      "typeVersion": 2.1,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $('Loop Over Items').first().json.id }}"
+        },
+        "requestOptions": {}
+      },
+      "id": "551497c6-9f9f-468a-a71c-394bef353ae3",
+      "name": "Get full workflow JSON",
+      "type": "n8n-nodes-base.n8n",
+      "position": [
+        -4784,
+        -416
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "or",
+          "conditions": [
+            {
+              "id": "34d44462-f09f-4f8c-910a-be361eb56c10",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              },
+              "leftValue": "={{ $json['n8n version ID'] }}",
+              "rightValue": ""
+            },
+            {
+              "id": "2b0c4d48-b77c-4dd5-a2bd-6257dcae2f20",
+              "operator": {
+                "type": "string",
+                "operation": "notExists",
+                "singleValue": true
+              },
+              "leftValue": "={{ $json['n8n version ID'] }}",
+              "rightValue": ""
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0c110360-9f2b-44cb-99da-2313c0b49881",
+      "name": "Only keep new snapshots",
+      "type": "n8n-nodes-base.filter",
+      "position": [
+        -8560,
+        -416
+      ],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "id": "4d13845e-0f45-4542-90bf-b3bb5524dcd7",
+      "name": "Wait",
+      "type": "n8n-nodes-base.wait",
+      "position": [
+        -3808,
+        -48
+      ],
+      "webhookId": "393a9b19-f641-4876-84a1-379a207a1bc7",
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "filters": {
+          "excludePinnedData": true
+        },
+        "requestOptions": {}
+      },
+      "id": "6d6a4c9f-b02f-4001-8e10-18ec48d25f3c",
+      "name": "Get all n8n workflows",
+      "type": "n8n-nodes-base.n8n",
+      "position": [
+        -9008,
+        -512
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "advanced": true,
+        "mergeByFields": {
+          "values": [
+            {
+              "field1": "versionId",
+              "field2": "n8n version ID"
+            }
+          ]
+        },
+        "joinMode": "keepNonMatches",
+        "outputDataFrom": "input1",
+        "options": {}
+      },
+      "id": "d0092c53-d5b9-4c06-86cf-beeb2ad7b7bc",
+      "name": "Match snapshot IDs",
+      "type": "n8n-nodes-base.merge",
+      "position": [
+        -8784,
+        -416
+      ],
+      "typeVersion": 3.2
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "id": "14605742-30f6-4f32-9986-d828d3ff6e0f",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "position": [
+        -9360,
+        -416
+      ],
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "mode": "list",
+          "value": "appPFFj6CUUhZyDPT",
+          "cachedResultUrl": "https://airtable.com/appPFFj6CUUhZyDPT",
+          "cachedResultName": "n8n workflows backup (template)"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "list",
+          "value": "tblavE6Zl51smbyGV",
+          "cachedResultUrl": "https://airtable.com/appPFFj6CUUhZyDPT/tblavE6Zl51smbyGV",
+          "cachedResultName": "Snapshots"
+        },
+        "options": {
+          "fields": [
+            "n8n version ID"
+          ]
+        }
+      },
+      "id": "0f5941eb-da2b-4f07-b899-0c4c6c26c309",
+      "name": "Search all existing snapshots",
+      "type": "n8n-nodes-base.airtable",
+      "position": [
+        -9008,
+        -320
+      ],
+      "typeVersion": 2.1,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "mode": "list",
+          "value": "appPFFj6CUUhZyDPT",
+          "cachedResultUrl": "https://airtable.com/appPFFj6CUUhZyDPT",
+          "cachedResultName": "n8n workflows backup (template)"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "list",
+          "value": "tblavE6Zl51smbyGV",
+          "cachedResultUrl": "https://airtable.com/appSYKqZwWcxbEdKq/tblavE6Zl51smbyGV",
+          "cachedResultName": "Snapshots"
+        },
+        "filterByFormula": "={n8n version ID} = '{{ $('Create or update workflow').first().json.fields['Last snapshot version ID'][0] }}'",
+        "returnAll": false,
+        "limit": 1,
+        "options": {
+          "downloadFields": [
+            "Workflow_file"
+          ]
+        }
+      },
+      "id": "6ab0bb38-e76a-43de-a864-d2570c46fe97",
+      "name": "Download previous snapshot",
+      "type": "n8n-nodes-base.airtable",
+      "position": [
+        -7088,
+        -752
+      ],
+      "typeVersion": 2.1,
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "operation": "fromJson",
+        "binaryPropertyName": "Workflow_file_0",
+        "destinationKey": "Previous JSON",
+        "options": {}
+      },
+      "id": "ae514659-5cf4-4dfd-8435-6503231f1ba9",
+      "name": "Extract from File1",
+      "type": "n8n-nodes-base.extractFromFile",
+      "position": [
+        -6864,
+        -752
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "base": {
+          "__rl": true,
+          "mode": "list",
+          "value": "appPFFj6CUUhZyDPT",
+          "cachedResultUrl": "https://airtable.com/appPFFj6CUUhZyDPT",
+          "cachedResultName": "n8n workflows backup (template)"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "list",
+          "value": "tblfjTaQd9nnVt9WP",
+          "cachedResultUrl": "https://airtable.com/appSYKqZwWcxbEdKq/tblfjTaQd9nnVt9WP",
+          "cachedResultName": "Workflows"
+        },
+        "columns": {
+          "value": {
+            "Workflow ID": "={{ $('Loop Over Items').item.json.id }}",
+            "Creation time": "={{ $('Loop Over Items').item.json.createdAt }}",
+            "Workflow name": "={{ $('Loop Over Items').item.json.name }}"
+          },
+          "schema": [
+            {
+              "id": "id",
+              "type": "string",
+              "display": true,
+              "removed": true,
+              "readOnly": true,
+              "required": false,
+              "displayName": "id",
+              "defaultMatch": true
+            },
+            {
+              "id": "Workflow name",
+              "type": "string",
+              "display": true,
+              "removed": false,
+              "readOnly": false,
+              "required": false,
+              "displayName": "Workflow name",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Workflow ID",
+              "type": "string",
+              "display": true,
+              "removed": false,
+              "readOnly": false,
+              "required": false,
+              "displayName": "Workflow ID",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Open in n8n",
+              "type": "string",
+              "display": true,
+              "removed": true,
+              "readOnly": true,
+              "required": false,
+              "displayName": "Open in n8n",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "AI summary",
+              "type": "string",
+              "display": true,
+              "removed": true,
+              "readOnly": false,
+              "required": false,
+              "displayName": "AI summary",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Snapshots",
+              "type": "array",
+              "display": true,
+              "removed": true,
+              "readOnly": false,
+              "required": false,
+              "displayName": "Snapshots",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Snapshots count",
+              "type": "string",
+              "display": true,
+              "removed": true,
+              "readOnly": true,
+              "required": false,
+              "displayName": "Snapshots count",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Last snapshot version ID",
+              "type": "string",
+              "display": true,
+              "removed": true,
+              "readOnly": true,
+              "required": false,
+              "displayName": "Last snapshot version ID",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Last update time",
+              "type": "string",
+              "display": true,
+              "removed": true,
+              "readOnly": true,
+              "required": false,
+              "displayName": "Last update time",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Last version file",
+              "type": "string",
+              "display": true,
+              "removed": true,
+              "readOnly": true,
+              "required": false,
+              "displayName": "Last version file",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Comment",
+              "type": "string",
+              "display": true,
+              "removed": true,
+              "readOnly": false,
+              "required": false,
+              "displayName": "Comment",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Creation time",
+              "type": "dateTime",
+              "display": true,
+              "removed": false,
+              "readOnly": false,
+              "required": false,
+              "displayName": "Creation time",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Airtable record ID",
+              "type": "string",
+              "display": true,
+              "removed": true,
+              "readOnly": true,
+              "required": false,
+              "displayName": "Airtable record ID",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            }
+          ],
+          "mappingMode": "defineBelow",
+          "matchingColumns": [
+            "Workflow ID"
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "a3777cb1-59bd-49ef-9c10-d3938cd1e245",
+      "name": "Create or update workflow",
+      "type": "n8n-nodes-base.airtable",
+      "position": [
+        -8032,
+        -416
+      ],
+      "typeVersion": 2.1,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Count the number of items from the previous node\nlet numItems = $items().length;\n\n// Check for the specific case where the previous node is empty but returns\n// a single item without the expected 'id' key in its JSON.\nif (numItems === 1 && $items()[0].json && $items()[0].json.id === undefined) {\n  numItems = 0;\n}\n\n// Determine the boolean value.\n// The new rule is to regenerate when the number is 0, 1, 2, or a multiple of 5.\nconst regenerate = (numItems === 0 || numItems === 1 || numItems === 2 || numItems % 5 === 0);\n\n// Return a single item with the renamed keys\nreturn [\n  {\n    json: {\n      \"Number of snapshots\": numItems,\n      \"Re-generate AI summary?\": regenerate\n    }\n  }\n];\n"
+      },
+      "id": "136b04f7-4f07-4516-b7db-5d054e0bb9e5",
+      "name": "Check workflow status",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        -7568,
+        -416
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "273d684c-b737-4dab-9e89-3af3a08f4570",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              },
+              "leftValue": "={{ $json['Number of snapshots'] }}",
+              "rightValue": 0
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "71829038-7f7c-42e1-9d8d-6cd54fbab317",
+      "name": "Existing workflow?",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        -7344,
+        -416
+      ],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0f6c8c19-e75e-4cdc-a0fa-49320ba89006",
+              "name": "Edits since last snapshot",
+              "type": "string",
+              "value": "={{ $json.text }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "67292af1-d55c-43f6-b143-895c08730e10",
+      "name": "Prepare edits since last snapshot",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        -6288,
+        -752
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0f6c8c19-e75e-4cdc-a0fa-49320ba89006",
+              "name": "Edits since last snapshot",
+              "type": "string",
+              "value": "=N/A - First identified version of the workflow"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "41fcfeaa-58e7-46bf-970b-cb4f7121ef12",
+      "name": "State that this is the first version",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        -6320,
+        -288
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0f6c8c19-e75e-4cdc-a0fa-49320ba89006",
+              "name": "Edits since last snapshot",
+              "type": "string",
+              "value": "={{ $json['Edits since last snapshot'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "861ed3d6-09d8-458a-bc88-48a904affacc",
+      "name": "Consolidate edits since last snapshot",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        -6032,
+        -416
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "c065fb3f-54ce-4f45-8c91-d7f7972adc3b",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              },
+              "leftValue": "={{ $('Check workflow status').item.json['Re-generate AI summary?'] }}",
+              "rightValue": ""
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "486eff56-abd6-4b74-958c-3be660aa8379",
+      "name": "Needs new workflow summary?",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        -5808,
+        -416
+      ],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ JSON.stringify($json['Previous JSON'], null, 2) }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=Your role is to return a 1 sentence explanation of the difference between 2 n8n workflow versions.\n\nYou are detail-oriented when it comes to analysing and comparing workflows, but your output is rather concise as it is strictly one sentence.\n\nThe user message contains the JSON of the new version, and here is the previous version of the workflow to compare it to:\n\n{{ JSON.stringify($('Loop Over Items').first().json, null, 2) }}"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "id": "e2610ddb-599f-45a1-92c7-afee6d1349ec",
+      "name": "Document workflow differences",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "position": [
+        -6640,
+        -752
+      ],
+      "typeVersion": 1.7
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "mode": "list",
+          "value": "appPFFj6CUUhZyDPT",
+          "cachedResultUrl": "https://airtable.com/appPFFj6CUUhZyDPT",
+          "cachedResultName": "n8n workflows backup (template)"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "list",
+          "value": "tblavE6Zl51smbyGV",
+          "cachedResultUrl": "https://airtable.com/appSYKqZwWcxbEdKq/tblavE6Zl51smbyGV",
+          "cachedResultName": "Snapshots"
+        },
+        "columns": {
+          "value": {
+            "Workflow": "={{[ $('Create or update workflow').first().json.id ]}}",
+            "n8n version ID": "={{ $('Loop Over Items').first().json.versionId }}",
+            "Last update time": "={{ $('Loop Over Items').first().json.updatedAt }}",
+            "Edits since last snapshot": "={{ $('Consolidate edits since last snapshot').first().json['Edits since last snapshot'] }}"
+          },
+          "schema": [
+            {
+              "id": "Name",
+              "type": "string",
+              "display": true,
+              "removed": true,
+              "readOnly": true,
+              "required": false,
+              "displayName": "Name",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "n8n version ID",
+              "type": "string",
+              "display": true,
+              "removed": false,
+              "readOnly": false,
+              "required": false,
+              "displayName": "n8n version ID",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Last update time",
+              "type": "dateTime",
+              "display": true,
+              "removed": false,
+              "readOnly": false,
+              "required": false,
+              "displayName": "Last update time",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Time added",
+              "type": "string",
+              "display": true,
+              "removed": true,
+              "readOnly": true,
+              "required": false,
+              "displayName": "Time added",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Workflow",
+              "type": "array",
+              "display": true,
+              "removed": false,
+              "readOnly": false,
+              "required": false,
+              "displayName": "Workflow",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Workflow ID",
+              "type": "string",
+              "display": true,
+              "removed": true,
+              "readOnly": true,
+              "required": false,
+              "displayName": "Workflow ID",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Workflow_file",
+              "type": "array",
+              "display": true,
+              "removed": true,
+              "readOnly": false,
+              "required": false,
+              "displayName": "Workflow_file",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Edits since last snapshot",
+              "type": "string",
+              "display": true,
+              "removed": false,
+              "readOnly": false,
+              "required": false,
+              "displayName": "Edits since last snapshot",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Comment",
+              "type": "string",
+              "display": true,
+              "removed": true,
+              "readOnly": false,
+              "required": false,
+              "displayName": "Comment",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Airtable record ID",
+              "type": "string",
+              "display": true,
+              "removed": true,
+              "readOnly": true,
+              "required": false,
+              "displayName": "Airtable record ID",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            }
+          ],
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "typecast": true
+        }
+      },
+      "id": "16954e65-2bc2-462a-ab6c-22401fcd6ab3",
+      "name": "Store new snapshot",
+      "type": "n8n-nodes-base.airtable",
+      "position": [
+        -5008,
+        -416
+      ],
+      "typeVersion": 2.1,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://content.airtable.com/v0/<AIRTABLE-BASE-ID>/{{ $('Store new snapshot').first().json.id }}/Workflow_file/uploadAttachment",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "airtableTokenApi",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "contentType",
+              "value": "text/plain"
+            },
+            {
+              "name": "file",
+              "value": "={{ $json.data }}"
+            },
+            {
+              "name": "filename",
+              "value": "={{ $('Loop Over Items').first().json.versionId }}.json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "414ac19c-2ca9-4510-87e3-eb8ca1e05b9c",
+      "name": "Store workflow file into Airtable",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -4080,
+        -416
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-nano",
+          "cachedResultName": "gpt-4.1-nano"
+        },
+        "options": {}
+      },
+      "id": "7378823a-2545-450e-9300-20e45d2ce09c",
+      "name": "OpenAI Chat Model1",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "position": [
+        -6160,
+        256
+      ],
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {
+        "content": "## Insert your Airtable base ID into the URL\nThe current URL contains <AIRTABLE-BASE-ID>\nwhich should be replaced by the Airtable base ID. \n\nOpen the Airtable base you've prepared for this workflow and get the value starting with \"app...\" in the URL of the page:\nhttps://airtable.com/appxyz/...\n\nThis is your base ID.\n\n*NB: Using this Airtable API endpoint allows to store a file based on b64 file data instead of using workarounds with Drive or Dropbox!*\n",
+        "height": 576,
+        "width": 352,
+        "color": 3
+      },
+      "id": "465b3fd1-4d8d-4eb1-be31-905235ac2127",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -4192,
+        -800
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Preparing this workflow version to be imported into Airtable as a file",
+        "height": 320,
+        "width": 608,
+        "color": 7
+      },
+      "id": "5a23b2b1-bc39-41b6-88dc-26d900da2efe",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -4816,
+        -544
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## (re)-summarising the workflow with AI\nIf this is the first, second, third or a multiple of 5 # of snapshot we have for this workflow, we want to let AI re-generate a summary of the workflow as some changes might make the previous summary outdated.\n\nGenerating it at every backup wouldn't be token-efficient, but feel free to update the code of the \"Check workflow status\" node to change the frequency.\n\nNB: LLMs are able to read and understand the workflow based on its JSON which describes all nodes and parameters.",
+        "height": 528,
+        "width": 608,
+        "color": 5
+      },
+      "id": "524a3d4a-f530-4d82-b6b6-ca28b5f4186b",
+      "name": "Sticky Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -5664,
+        -1040
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## AI-documenting the edits VS the previous snapshot\nAs we have stored the file of the last snapshot, we might want to store for each new version a summary of the changes compared to the previous one.",
+        "height": 432,
+        "width": 992,
+        "color": 5
+      },
+      "id": "18525c69-bcb4-4f0e-940e-1500e35e8e45",
+      "name": "Sticky Note3",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -7136,
+        -912
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nIf the workflow didn't have a record yet in the \"Workflows\" tab in Airtable, this is when it gets created.\nIf it already existed, it resets the name anyway, in case it has changed since the last snapshot.",
+        "height": 416,
+        "width": 256
+      },
+      "id": "cf37e716-2401-43d2-b047-5c999adc60a4",
+      "name": "Sticky Note4",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -8112,
+        -464
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThis code looks at the result of our search of all past snapshots and returns the number of snapshots and Yes or No, whether it is time to re-generate a summary of the workflow or not.",
+        "height": 416,
+        "width": 256,
+        "color": 6
+      },
+      "id": "7d863668-f326-42ab-8b59-5ff61ebc477f",
+      "name": "Sticky Note5",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -7648,
+        -464
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Retrieving all workflows that have new snapshots\nBy comparing the list of the most recent version ID for each workflow and the list of snapshots we have stored in Airtable, we are able to detect the snapshots that need to be saved.",
+        "height": 544,
+        "width": 656,
+        "color": 4
+      },
+      "id": "2e968631-7a52-4ce1-9b0e-8b9c1104c5ff",
+      "name": "Sticky Note6",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -9104,
+        -656
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n## Connect your favorite AI provider and model\nIf you tend to have big workflows, their JSON might be long which will consume many Input tokens. As the quality of these AI insights isn't critical, you might want to use a small and efficient model.",
+        "height": 400,
+        "width": 384,
+        "color": 5
+      },
+      "id": "04c7ec90-f3ad-40ff-b7f1-64c6fa28c19b",
+      "name": "Sticky Note7",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -6304,
+        208
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {},
+      "id": "b16c0629-e6a8-4b46-a172-95848cb3b9de",
+      "name": "The backup is done!",
+      "type": "n8n-nodes-base.noOp",
+      "position": [
+        -8048,
+        -704
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Define your backup frequency\nDaily, weekly, or hourly backup, you decide! Configure this node and activate the workflow to push it live.",
+        "height": 544,
+        "width": 320
+      },
+      "id": "5175947a-8d5e-4ece-9c95-429c35890ac1",
+      "name": "Sticky Note8",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -9472,
+        -656
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Let's give some time to Airtable's API to rest!\nYes, REST APIs need to rest... ;)\n... to not reach rate limits.",
+        "height": 288,
+        "width": 400,
+        "color": 7
+      },
+      "id": "b3c8c5e7-6a4e-47c0-badf-0115ccd812e5",
+      "name": "Sticky Note9",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -3840,
+        -176
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "# Automated Workflow Backup & AI Documenter\n\nThis workflow runs on a schedule to find new versions of your workflows. It uses AI to generate a summary and a \"what's new\" changelog, then saves the backup `.json` file and all documentation to a central Airtable base.\n\n## How to use\n\n1.  **Duplicate the Airtable Base:** First, use this link ( https://airtable.com/appPFFj6CUUhZyDPT/shrorM8k6HsUqBACB ) to duplicate the Airtable base into your account.\n2.  **Connect your accounts:**\n    * Add your **n8n**, **Airtable**, and **AI provider** credentials to the relevant nodes in this workflow.\n    * Map the Airtable nodes to the base you just created.\n3.  **Update the Airtable Uploader (Critical):**\n    * In the **Store workflow file into Airtable** (HTTP Request) node, replace `<AIRTABLE-BASE-ID>` in the URL with your own base ID.\n4.  **Set your schedule & activate!** Your workflows are now protected.\n\n\n*This template has been built by Guillaume Duvernay*",
+        "height": 656,
+        "width": 512,
+        "color": 2
+      },
+      "id": "57415e61-ed79-4799-9509-72fa31b8bd87",
+      "name": "Sticky Note10",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -10032,
+        -768
+      ],
+      "typeVersion": 1
+    }
+  ],
+  "connections": {
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "The backup is done!",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create or update workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Move Binary Data": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get all n8n workflows",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Search all existing snapshots",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Store workflow file into Airtable",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Existing workflow?": {
+      "main": [
+        [
+          {
+            "node": "Download previous snapshot",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "State that this is the first version",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File1": {
+      "main": [
+        [
+          {
+            "node": "Document workflow differences",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Match snapshot IDs": {
+      "main": [
+        [
+          {
+            "node": "Only keep new snapshots",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Document workflow differences",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Re-summarise workflow",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store new snapshot": {
+      "main": [
+        [
+          {
+            "node": "Get full workflow JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search all snapshots": {
+      "main": [
+        [
+          {
+            "node": "Check workflow status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check workflow status": {
+      "main": [
+        [
+          {
+            "node": "Existing workflow?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get all n8n workflows": {
+      "main": [
+        [
+          {
+            "node": "Match snapshot IDs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Re-summarise workflow": {
+      "main": [
+        [
+          {
+            "node": "Store new workflow summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get full workflow JSON": {
+      "main": [
+        [
+          {
+            "node": "Move Binary Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Only keep new snapshots": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create or update workflow": {
+      "main": [
+        [
+          {
+            "node": "Search all snapshots",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download previous snapshot": {
+      "main": [
+        [
+          {
+            "node": "Extract from File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store new workflow summary": {
+      "main": [
+        [
+          {
+            "node": "Store new snapshot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Needs new workflow summary?": {
+      "main": [
+        [
+          {
+            "node": "Re-summarise workflow",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Store new snapshot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Document workflow differences": {
+      "main": [
+        [
+          {
+            "node": "Prepare edits since last snapshot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search all existing snapshots": {
+      "main": [
+        [
+          {
+            "node": "Match snapshot IDs",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Prepare edits since last snapshot": {
+      "main": [
+        [
+          {
+            "node": "Consolidate edits since last snapshot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store workflow file into Airtable": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "State that this is the first version": {
+      "main": [
+        [
+          {
+            "node": "Consolidate edits since last snapshot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consolidate edits since last snapshot": {
+      "main": [
+        [
+          {
+            "node": "Needs new workflow summary?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "ca278d37-5017-4a85-86d9-439eea52cb6f",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-09-07T12:02:27.105Z",
+      "updatedAt": "2025-09-07T12:02:27.105Z",
+      "role": "workflow:owner",
+      "workflowId": "nuQso1Mrt77Ezdww",
+      "projectId": "EMKC3HvbWexR6hSv"
+    }
+  ],
+  "tags": []
+}
