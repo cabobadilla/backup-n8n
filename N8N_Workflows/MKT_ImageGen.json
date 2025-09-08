@@ -1,0 +1,86 @@
+{
+  "createdAt": "2025-09-07T01:42:27.605Z",
+  "updatedAt": "2025-09-07T01:42:27.605Z",
+  "id": "qAMIZhPSp85ukojP",
+  "name": "MKT_ImageGen",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.replicate.com/v1/models/black-forest-labs/flux-1.1-pro-ultra/predictions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Token GETYOURTOKEN"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"input\": {\n    \"raw\": false,\n    \"prompt\": \"{{ $json.prompt }}\",\n    \"aspect_ratio\": \"3:4\",\n    \"output_format\": \"jpg\",\n    \"safety_tolerance\": 6\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "ea52e311-9ba5-4283-9f0d-e4ded2d4e6bc",
+      "name": "img_generator"
+    },
+    {
+      "parameters": {
+        "inputSource": "jsonExample",
+        "jsonExample": "{\n  \"prompt\": \"a string\"\n}"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "dab87ea6-a91e-4b03-b21a-00170766e85f",
+      "name": "When Executed by Another Workflow"
+    }
+  ],
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "img_generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "74555dc9-8d2a-47eb-8acd-9dd2e47c9426",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-09-07T01:42:27.605Z",
+      "updatedAt": "2025-09-07T01:42:27.605Z",
+      "role": "workflow:owner",
+      "workflowId": "qAMIZhPSp85ukojP",
+      "projectId": "EMKC3HvbWexR6hSv"
+    }
+  ],
+  "tags": []
+}
