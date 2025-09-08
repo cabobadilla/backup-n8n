@@ -1,0 +1,1113 @@
+{
+  "createdAt": "2025-09-07T11:45:08.704Z",
+  "updatedAt": "2025-09-07T22:53:56.399Z",
+  "id": "SL83ALFgwNpFfLYE",
+  "name": "BackupWorkflows",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1200,
+        -384
+      ],
+      "id": "3562150a-4cac-4c7c-8d55-ad3394a0c037",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "url": "https://primary-production-4c7b.up.railway.app/api/v1/workflows",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "X-N8N-API-KEY",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4YTQxMTM4ZC01NWIzLTQ2MGItOWVlMy1lYjc2OTQwNmVmZDkiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwiaWF0IjoxNzU3MjQ1NjkxfQ.WSuz1q5tjic9CUzamyPT_mqLHGbp783hgLB8_SDcsNk"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -992,
+        -384
+      ],
+      "id": "2c46834c-ba4f-446c-b624-80b352f72e5c",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -784,
+        -384
+      ],
+      "id": "89ac7265-5561-4bdf-8f34-749423e930ce",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d1133ba7-b3c0-446f-8d28-53a152c14c83",
+              "name": "id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "8e1332b7-2bbf-4d7a-85ce-bb5edc978ae3",
+              "name": "name",
+              "value": "={{ $json.name }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -576,
+        -384
+      ],
+      "id": "744a8bb5-5eee-435d-a2a1-495f853a0244",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -368,
+        -384
+      ],
+      "id": "17937ae1-f3f4-47fa-8517-0a77f6937fbf",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "name": "Replace Me",
+      "typeVersion": 1,
+      "position": [
+        448,
+        -368
+      ],
+      "id": "9f494fa9-16f9-4e68-a164-ab16cc30d562"
+    },
+    {
+      "parameters": {
+        "url": "=https://primary-production-4c7b.up.railway.app/api/v1/workflows/{{ $json.id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-N8N-API-KEY",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4YTQxMTM4ZC01NWIzLTQ2MGItOWVlMy1lYjc2OTQwNmVmZDkiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwiaWF0IjoxNzU3MjQ1NjkxfQ.WSuz1q5tjic9CUzamyPT_mqLHGbp783hgLB8_SDcsNk"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -128,
+        -368
+      ],
+      "id": "0bd15680-cbfa-4e4f-bac3-22e3c7d0f00c",
+      "name": "Download"
+    },
+    {
+      "parameters": {
+        "operation": "toJson",
+        "options": {
+          "format": true,
+          "fileName": "={{ $('Loop Over Items').item.json.name }}"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        64,
+        -368
+      ],
+      "id": "2f0c7b12-8312-4cd4-b27c-2a6a39b9363c",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "name": "=backup {{ $('Loop Over Items').item.json.name }}",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "https://drive.google.com/drive/folders/1FE5ijyXHzYFldnTlpqU8VVwr1shXkXlo",
+          "mode": "url"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        256,
+        -368
+      ],
+      "id": "34d82f71-d654-44e1-bb42-b51285a540ab",
+      "name": "Upload file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "3PETjBJ2uSTlFk6W",
+          "name": "GoogleDrive_cbobadilla"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "workflowId": {
+          "__rl": true,
+          "value": "b8NqMyXVBT9oN8Ev",
+          "mode": "list",
+          "cachedResultName": "pagos (#b8NqMyXVBT9oN8Ev)"
+        },
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [
+        -1152,
+        -128
+      ],
+      "id": "3d6f4879-cac6-423b-b554-254f1f417116",
+      "name": "Get Workflows",
+      "credentials": {
+        "n8nApi": {
+          "id": "2k5dROl18qj47hKQ",
+          "name": "n8n backup"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// This code creates a properly formatted n8n workflow JSON for import\n// The key is to structure it exactly as n8n expects when importing\n\nfor (const item of $input.all()) {\n  const workflow = item.json;\n  \n  // Create a properly formatted workflow object for import\n  const importableWorkflow = {\n    name: workflow.name,\n    nodes: workflow.nodes || [],\n    connections: workflow.connections || {},\n    active: workflow.active || false,\n    settings: workflow.settings || {\n      executionOrder: \"v1\"\n    },\n    staticData: workflow.staticData || null,\n    meta: {\n      instanceId: \"\"\n    },\n    pinData: workflow.pinData || {},\n    versionId: workflow.versionId || \"\",\n    triggerCount: workflow.triggerCount || 0,\n    tags: workflow.tags || []\n  };\n  \n  // Clean up any internal IDs that shouldn't be in exported workflows\n  if (importableWorkflow.nodes) {\n    importableWorkflow.nodes = importableWorkflow.nodes.map(node => {\n      const cleanNode = { ...node };\n      // Remove internal properties that cause import issues\n      delete cleanNode.id;\n      return cleanNode;\n    });\n  }\n  \n  // Create filename with safe characters\n  const safeFilename = workflow.name\n    .replace(/[^a-zA-Z0-9\\s-_]/g, '') // Remove special characters\n    .replace(/\\s+/g, '_') // Replace spaces with underscores\n    .toLowerCase();\n  \n  const timestamp = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format\n  const filename = `${safeFilename}_${workflow.id}_${timestamp}.json`;\n  \n  return {\n    json: {\n      workflowId: workflow.id,\n      workflowName: workflow.name,\n      filename: filename,\n      importableWorkflow: importableWorkflow,\n      jsonContent: JSON.stringify(importableWorkflow, null, 2)\n    }\n  };\n}\n\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -688,
+        -128
+      ],
+      "id": "67f257f9-c009-4e60-b270-91c32961d478",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "workflowId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [
+        -928,
+        -128
+      ],
+      "id": "18185489-d708-418a-bd8c-8720671e967d",
+      "name": "Get a workflow",
+      "credentials": {
+        "n8nApi": {
+          "id": "2k5dROl18qj47hKQ",
+          "name": "n8n backup"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1360,
+        -128
+      ],
+      "id": "280c4b5e-a814-491f-82a5-cd3ed7a287d4",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "operation": "toJson",
+        "binaryPropertyName": "={{ $json.importableWorkflow }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        -480,
+        -128
+      ],
+      "id": "dbcdecb6-7ae2-4a1f-8dc5-d69c90306b7f",
+      "name": "Convert to File1"
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Download",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replace Me": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Upload file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file": {
+      "main": [
+        [
+          {
+            "node": "Replace Me",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Workflows": {
+      "main": [
+        [
+          {
+            "node": "Get a workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Convert to File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a workflow": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get Workflows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Download": [
+      {
+        "json": {
+          "createdAt": "2025-09-07T02:36:30.535Z",
+          "updatedAt": "2025-09-07T02:36:30.535Z",
+          "id": "lDZINRgGTrIwp0g0",
+          "name": "Image to PDF",
+          "active": false,
+          "isArchived": false,
+          "nodes": [
+            {
+              "parameters": {},
+              "id": "56620ecf-37f8-44d4-ae21-09e1841991b7",
+              "name": "When clicking ‘Test workflow’",
+              "type": "n8n-nodes-base.manualTrigger",
+              "position": [
+                304,
+                368
+              ],
+              "typeVersion": 1
+            },
+            {
+              "parameters": {
+                "sortFieldsUi": {
+                  "sortField": [
+                    {
+                      "fieldName": "createdTime"
+                    }
+                  ]
+                },
+                "options": {}
+              },
+              "id": "3af75250-587c-4382-acbb-05909db156ba",
+              "name": "Sort by Created Date",
+              "type": "n8n-nodes-base.sort",
+              "position": [
+                1808,
+                368
+              ],
+              "typeVersion": 1
+            },
+            {
+              "parameters": {
+                "options": {}
+              },
+              "id": "80e9c8e4-389d-489e-8e21-ccbaf250cd3b",
+              "name": "Loop Over Items",
+              "type": "n8n-nodes-base.splitInBatches",
+              "position": [
+                2032,
+                368
+              ],
+              "typeVersion": 3
+            },
+            {
+              "parameters": {
+                "operation": "share",
+                "fileId": {
+                  "__rl": true,
+                  "mode": "id",
+                  "value": "={{ $('Sort by Created Date').item.json.id }}"
+                },
+                "permissionsUi": {
+                  "permissionsValues": {
+                    "role": "reader",
+                    "type": "anyone"
+                  }
+                },
+                "options": {}
+              },
+              "id": "83a40f14-b677-4d96-b292-5abe17c8948d",
+              "name": "Update Image Permissions",
+              "type": "n8n-nodes-base.googleDrive",
+              "position": [
+                2464,
+                368
+              ],
+              "typeVersion": 3
+            },
+            {
+              "parameters": {
+                "operation": "download",
+                "fileId": {
+                  "__rl": true,
+                  "mode": "id",
+                  "value": "={{ $('CopyPdfTemplate').item.json.id }}"
+                },
+                "options": {
+                  "googleFileConversion": {
+                    "conversion": {
+                      "docsToFormat": "application/pdf",
+                      "slidesToFormat": "application/pdf"
+                    }
+                  }
+                }
+              },
+              "id": "2d00dc30-5563-4a4c-9dbb-d8e2598e0e56",
+              "name": "Convert slides to PDF",
+              "type": "n8n-nodes-base.googleDrive",
+              "position": [
+                2688,
+                160
+              ],
+              "typeVersion": 3
+            },
+            {
+              "parameters": {
+                "keep": "lastItems"
+              },
+              "id": "5e66dfe0-0007-419c-9bf8-c44c49a92ed7",
+              "name": "Limit: 1Page",
+              "type": "n8n-nodes-base.limit",
+              "position": [
+                2240,
+                160
+              ],
+              "typeVersion": 1
+            },
+            {
+              "parameters": {
+                "conditions": {
+                  "options": {
+                    "version": 2,
+                    "leftValue": "",
+                    "caseSensitive": true,
+                    "typeValidation": "strict"
+                  },
+                  "combinator": "and",
+                  "conditions": [
+                    {
+                      "id": "12999f01-4775-46ab-bc60-1c1e68a3c4d2",
+                      "operator": {
+                        "name": "filter.operator.equals",
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "leftValue": "={{ $json.mimeType }}",
+                      "rightValue": "image/png"
+                    }
+                  ]
+                },
+                "options": {}
+              },
+              "id": "e13468a3-4541-4fcb-9516-a99246e17fa6",
+              "name": "Filter: Only Images",
+              "type": "n8n-nodes-base.filter",
+              "position": [
+                1584,
+                368
+              ],
+              "typeVersion": 2.2
+            },
+            {
+              "parameters": {
+                "name": "={{ $('Set Pdf File Name').item.json.presentation_title }}",
+                "driveId": {
+                  "__rl": true,
+                  "mode": "list",
+                  "value": "My Drive"
+                },
+                "folderId": {
+                  "__rl": true,
+                  "mode": "id",
+                  "value": "={{ $('Get Folder Id w Presentation').item.json.parents[0] }}"
+                },
+                "options": {}
+              },
+              "id": "d5d36e08-a476-4dde-94a0-2ce35afa1472",
+              "name": "Upload Final PDF File",
+              "type": "n8n-nodes-base.googleDrive",
+              "position": [
+                2912,
+                160
+              ],
+              "typeVersion": 3
+            },
+            {
+              "parameters": {
+                "content": "## 📚 Create a PDF from Google Drive Images\n\nThis workflow takes all images from a Google Drive folder you specify, sorts them by creation date, and compiles them into a single PDF using a Google Slides template.\n\n**Key Things to Know Before You Start:**\n\n  **Set Your File Name:**\n- Go to the **'Set Pdf File Name'** node \n- Update the `presentation_title` value with your desired PDF name.\n\n🔑 **Connect Google Accounts:**\n- Authenticate your Google Drive & Google Slides accounts in all relevant Google nodes and HTTP nodes.\n\n📏 **Use a Google Slides Template for Custom Page Size:**\n- Google Slides defaults to a 16:9 aspect ratio. If you need specific PDF dimensions (e.g., A4, US Letter, square), **first create a Google Slides file with your desired page size.**\n- Then, select this custom Google Slides file in the **'CopyPdfTemplate'** node (under 'File').\n\n🖼️ **Image & Folder Setup:**\n- In the **'CopyPdfTemplate'** node, also select the Google Drive **Folder** where your source images are located. The copied presentation and final PDF will also be created here.\n- The workflow filters for `.png` images by default. To use other types (like JPG), update the **'Filter: Only Images'** node.\n\n⚠️ **Image Size & Workflow Limits:**\n- Google Slides may have limitations on individual image size and the overall PDF file size when exporting.\n- This workflow works well for smaller presentations (10–20 pages). Larger files may run into errors or performance issues during export.\n\n💰 **Cost:** Free to use (relies on standard Google API calls, which are generally within free tier limits for typical usage).",
+                "height": 1020,
+                "width": 400,
+                "color": 4
+              },
+              "id": "7f1e3162-a32c-4fe0-8e8c-94529eb96d43",
+              "name": "Sticky Note",
+              "type": "n8n-nodes-base.stickyNote",
+              "position": [
+                -160,
+                -80
+              ],
+              "typeVersion": 1
+            },
+            {
+              "parameters": {
+                "assignments": {
+                  "assignments": [
+                    {
+                      "id": "b994aa5e-1580-43f6-90b0-f0ea8efd9614",
+                      "name": "presentation_title",
+                      "type": "string",
+                      "value": "[Your PDF Name Here]"
+                    }
+                  ]
+                },
+                "options": {}
+              },
+              "id": "12219059-85e7-4335-ba18-e528b0668828",
+              "name": "Set Pdf File Name",
+              "type": "n8n-nodes-base.set",
+              "position": [
+                528,
+                368
+              ],
+              "typeVersion": 3.4
+            },
+            {
+              "parameters": {
+                "method": "POST",
+                "url": "=https://slides.googleapis.com/v1/presentations/{{ $('Get Created Presentation').item.json.presentationId }}:batchUpdate",
+                "authentication": "predefinedCredentialType",
+                "nodeCredentialType": "googleSlidesOAuth2Api",
+                "sendBody": true,
+                "specifyBody": "json",
+                "jsonBody": "={\n  \"requests\": [\n    {\n      \"deleteObject\": {\n        \"objectId\": \"{{ $('Get Created Presentation').item.json.slides[0].objectId }}\" \n      } \n    } \n  ]\n}",
+                "options": {}
+              },
+              "id": "8f7bea11-a0df-4160-858b-45cb6386b223",
+              "name": "Delete First Empty Slide",
+              "type": "n8n-nodes-base.httpRequest",
+              "position": [
+                2464,
+                160
+              ],
+              "typeVersion": 4.2
+            },
+            {
+              "parameters": {
+                "operation": "copy",
+                "fileId": {
+                  "__rl": true,
+                  "mode": "list",
+                  "value": "1_Mfgb7lUD8tXRg3cXeIQXjQ9vgCG-TzwOoWVok_ROQ8",
+                  "cachedResultUrl": "https://docs.google.com/presentation/d/1_Mfgb7lUD8tXRg3cXeIQXjQ9vgCG-TzwOoWVok_ROQ8/edit?usp=drivesdk",
+                  "cachedResultName": "Book_Template"
+                },
+                "name": "={{ $json.presentation_title }}",
+                "sameFolder": false,
+                "driveId": {
+                  "__rl": true,
+                  "mode": "list",
+                  "value": "My Drive"
+                },
+                "folderId": {
+                  "__rl": true,
+                  "mode": "list",
+                  "value": "",
+                  "cachedResultUrl": "",
+                  "cachedResultName": ""
+                },
+                "options": {}
+              },
+              "id": "68559e73-0d7c-4e67-bdb8-6b907f8db589",
+              "name": "CopyPdfTemplate",
+              "type": "n8n-nodes-base.googleDrive",
+              "position": [
+                752,
+                368
+              ],
+              "typeVersion": 3
+            },
+            {
+              "parameters": {
+                "operation": "get",
+                "presentationId": "={{ $('CopyPdfTemplate').item.json.id }}"
+              },
+              "id": "0653f91a-71d4-4f89-b1b5-72f62cc8bb42",
+              "name": "Get Created Presentation",
+              "type": "n8n-nodes-base.googleSlides",
+              "position": [
+                960,
+                368
+              ],
+              "typeVersion": 2
+            },
+            {
+              "parameters": {
+                "url": "=https://www.googleapis.com/drive/v3/files/{{ $json.presentationId }}?fields=parents",
+                "authentication": "predefinedCredentialType",
+                "nodeCredentialType": "googleDriveOAuth2Api",
+                "options": {}
+              },
+              "id": "ec4b5a97-ac82-4f2e-8a09-c388534e6830",
+              "name": "Get Folder Id w Presentation",
+              "type": "n8n-nodes-base.httpRequest",
+              "position": [
+                1168,
+                368
+              ],
+              "typeVersion": 4.2
+            },
+            {
+              "parameters": {
+                "resource": "fileFolder",
+                "queryString": "=",
+                "returnAll": true,
+                "filter": {
+                  "folderId": {
+                    "__rl": true,
+                    "mode": "id",
+                    "value": "={{ $json.parents[0] }}"
+                  }
+                },
+                "options": {
+                  "fields": [
+                    "*"
+                  ]
+                }
+              },
+              "id": "18c89ec4-66a9-45d9-8d86-a4912a466622",
+              "name": "Get All Files From the Folder",
+              "type": "n8n-nodes-base.googleDrive",
+              "position": [
+                1360,
+                368
+              ],
+              "typeVersion": 3
+            },
+            {
+              "parameters": {
+                "method": "POST",
+                "url": "=https://slides.googleapis.com/v1/presentations/{{ $('CopyPdfTemplate').item.json.id }}:batchUpdate",
+                "authentication": "predefinedCredentialType",
+                "nodeCredentialType": "googleSlidesOAuth2Api",
+                "sendBody": true,
+                "specifyBody": "json",
+                "jsonBody": "{\n  \"requests\": [\n    {\n      \"createSlide\": {\n        \"slideLayoutReference\": {\n          \"predefinedLayout\": \"BLANK\"\n          \n        } \n      } \n    } \n  ]\n}",
+                "options": {}
+              },
+              "id": "eef2d515-331d-43cd-95bb-a0bdce68c19b",
+              "name": "Create An Empty Slide",
+              "type": "n8n-nodes-base.httpRequest",
+              "position": [
+                2240,
+                368
+              ],
+              "typeVersion": 4.2
+            },
+            {
+              "parameters": {
+                "method": "POST",
+                "url": "=https://slides.googleapis.com/v1/presentations/{{ $('CopyPdfTemplate').item.json.id }}:batchUpdate",
+                "authentication": "predefinedCredentialType",
+                "nodeCredentialType": "googleSlidesOAuth2Api",
+                "sendBody": true,
+                "specifyBody": "json",
+                "jsonBody": "={\n  \"requests\": [\n    {\n      \"createImage\": {\n        \"url\": \"{{ $('Sort by Created Date').item.json.webContentLink }}\",\n        \"elementProperties\": {\n           \"size\": {\n            \"width\": {\n              \"unit\": \"{{ $('Get Created Presentation').item.json.pageSize.width.unit }}\",\n              \"magnitude\": {{ $('Get Created Presentation').item.json.pageSize.width.magnitude }}\n            },\n            \"height\": {\n              \"unit\": \"{{ $('Get Created Presentation').item.json.pageSize.height.unit }}\",\n              \"magnitude\": {{ $('Get Created Presentation').item.json.pageSize.height.magnitude }}\n            }\n          },\n  \"transform\": {\n    \"scaleX\":  1,\n    \"scaleY\":  1,\n    \"translateX\": 0,\n    \"translateY\": 0,\n    \"unit\": \"PT\"\n  },\n          \"pageObjectId\": \"{{ $('Create An Empty Slide').item.json.replies[0].createSlide.objectId }}\" \n        } \n      } \n    } \n  ]\n}",
+                "options": {}
+              },
+              "id": "65b95ab4-d411-4b53-9994-e885c8bbbd20",
+              "name": "Add Image To The Slide",
+              "type": "n8n-nodes-base.httpRequest",
+              "position": [
+                2688,
+                448
+              ],
+              "typeVersion": 4.2
+            },
+            {
+              "parameters": {
+                "content": "## Configure Template & Image Folder\n\n⚙️ In the **'CopyPdfTemplate'** node configure:\n\n1.  **File -> From list:** Select your Google Slides template file. This will be the base for your PDF. If you want book orientation, it should be specified in the template in File-> Page Setup\n\n2.  **Parent Folder -> From list:** Choose the Google Drive folder where your source images are located.\n\n➡️ **Important:** The workflow will create the final PDF in the *same folder* where you have your images",
+                "height": 620,
+                "width": 440,
+                "color": 6
+              },
+              "id": "94e86ffb-4bf7-4ccf-9d3e-25ef8362b239",
+              "name": "Sticky Note2",
+              "type": "n8n-nodes-base.stickyNote",
+              "position": [
+                688,
+                -16
+              ],
+              "typeVersion": 1
+            },
+            {
+              "parameters": {
+                "content": "## Image Filter Information\n\n🖼️ **Image Format Note** \n\nThis workflow is preset to find and process `.png` images from your Google Drive folder (using MIME type `image/png`).\n\nIf you're using other image formats (e.g., JPG, GIF), you'll need to update the **'Filter: Only Images'** node.\n\nSpecifically, change the filter condition from `image/png` to the correct MIME type for your image files (e.g., `image/jpeg` for JPGs).",
+                "height": 600,
+                "width": 420,
+                "color": 6
+              },
+              "id": "d60935de-c9f6-478d-a953-bdc1e2c42858",
+              "name": "Sticky Note3",
+              "type": "n8n-nodes-base.stickyNote",
+              "position": [
+                1520,
+                -16
+              ],
+              "typeVersion": 1
+            },
+            {
+              "parameters": {
+                "content": "## How the Image-to-Slide Process Works\n\n🔄 **How Images Are Added to Slides** \n1.  The workflow fetches all images (that pass the filter) from your specified Google Drive folder.\n2.  It sorts these images by their creation date.\n3.  For each image, the workflow:\n    a. Creates a new blank slide in your Google Slides presentation.\n    b. Updates the image's permissions in Google Drive to be publicly readable (this is a temporary step, necessary for the Google Slides API to insert the image using its URL).\n    c. Adds the image to the new slide, fitting it to the slide's dimensions.\n\n**Final Touch:** After all images are added, the *very first slide* of the presentation (which is a blank page from your template) is deleted.",
+                "height": 340,
+                "width": 840,
+                "color": 6
+              },
+              "id": "47a1b396-ff22-46a5-b38d-8bdfaac6d0eb",
+              "name": "Sticky Note4",
+              "type": "n8n-nodes-base.stickyNote",
+              "position": [
+                1984,
+                672
+              ],
+              "typeVersion": 1
+            }
+          ],
+          "connections": {
+            "Limit: 1Page": {
+              "main": [
+                [
+                  {
+                    "node": "Delete First Empty Slide",
+                    "type": "main",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "CopyPdfTemplate": {
+              "main": [
+                [
+                  {
+                    "node": "Get Created Presentation",
+                    "type": "main",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "Loop Over Items": {
+              "main": [
+                [
+                  {
+                    "node": "Limit: 1Page",
+                    "type": "main",
+                    "index": 0
+                  }
+                ],
+                [
+                  {
+                    "node": "Create An Empty Slide",
+                    "type": "main",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "Set Pdf File Name": {
+              "main": [
+                [
+                  {
+                    "node": "CopyPdfTemplate",
+                    "type": "main",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "Filter: Only Images": {
+              "main": [
+                [
+                  {
+                    "node": "Sort by Created Date",
+                    "type": "main",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "Sort by Created Date": {
+              "main": [
+                [
+                  {
+                    "node": "Loop Over Items",
+                    "type": "main",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "Convert slides to PDF": {
+              "main": [
+                [
+                  {
+                    "node": "Upload Final PDF File",
+                    "type": "main",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "Create An Empty Slide": {
+              "main": [
+                [
+                  {
+                    "node": "Update Image Permissions",
+                    "type": "main",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "Add Image To The Slide": {
+              "main": [
+                [
+                  {
+                    "node": "Loop Over Items",
+                    "type": "main",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "Delete First Empty Slide": {
+              "main": [
+                [
+                  {
+                    "node": "Convert slides to PDF",
+                    "type": "main",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "Get Created Presentation": {
+              "main": [
+                [
+                  {
+                    "node": "Get Folder Id w Presentation",
+                    "type": "main",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "Update Image Permissions": {
+              "main": [
+                [
+                  {
+                    "node": "Add Image To The Slide",
+                    "type": "main",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "Get Folder Id w Presentation": {
+              "main": [
+                [
+                  {
+                    "node": "Get All Files From the Folder",
+                    "type": "main",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "Get All Files From the Folder": {
+              "main": [
+                [
+                  {
+                    "node": "Filter: Only Images",
+                    "type": "main",
+                    "index": 0
+                  }
+                ]
+              ]
+            },
+            "When clicking ‘Test workflow’": {
+              "main": [
+                [
+                  {
+                    "node": "Set Pdf File Name",
+                    "type": "main",
+                    "index": 0
+                  }
+                ]
+              ]
+            }
+          },
+          "settings": {
+            "executionOrder": "v1"
+          },
+          "staticData": null,
+          "meta": null,
+          "pinData": {},
+          "versionId": "eef3eb29-1ad1-4f16-a4a2-2807fcfd2e7a",
+          "triggerCount": 0,
+          "shared": [
+            {
+              "createdAt": "2025-09-07T02:36:30.535Z",
+              "updatedAt": "2025-09-07T02:36:30.535Z",
+              "role": "workflow:owner",
+              "workflowId": "lDZINRgGTrIwp0g0",
+              "projectId": "EMKC3HvbWexR6hSv",
+              "project": {
+                "createdAt": "2025-09-06T20:17:51.276Z",
+                "updatedAt": "2025-09-06T20:18:57.622Z",
+                "id": "EMKC3HvbWexR6hSv",
+                "name": "Chris Bobadilla <cbobadilla.dsoft@gmail.com>",
+                "type": "personal",
+                "icon": null,
+                "description": null,
+                "projectRelations": [
+                  {
+                    "createdAt": "2025-09-06T20:17:51.276Z",
+                    "updatedAt": "2025-09-06T20:17:51.276Z",
+                    "role": "project:personalOwner",
+                    "userId": "8a41138d-55b3-460b-9ee3-eb769406efd9",
+                    "projectId": "EMKC3HvbWexR6hSv",
+                    "user": {
+                      "createdAt": "2025-09-06T20:17:50.076Z",
+                      "updatedAt": "2025-09-07T04:03:11.724Z",
+                      "id": "8a41138d-55b3-460b-9ee3-eb769406efd9",
+                      "email": "cbobadilla.dsoft@gmail.com",
+                      "firstName": "Chris",
+                      "lastName": "Bobadilla",
+                      "personalizationAnswers": {
+                        "version": "v4",
+                        "personalization_survey_submitted_at": "2025-09-06T20:19:16.478Z",
+                        "personalization_survey_n8n_version": "1.109.2",
+                        "companySize": "<20",
+                        "companyType": "saas",
+                        "role": "customer-support",
+                        "reportedSource": "youtube"
+                      },
+                      "settings": {
+                        "userActivated": true,
+                        "firstSuccessfulWorkflowId": "b8NqMyXVBT9oN8Ev",
+                        "userActivatedAt": 1757215770724,
+                        "easyAIWorkflowOnboarded": true
+                      },
+                      "role": "global:owner",
+                      "disabled": false,
+                      "mfaEnabled": false,
+                      "lastActiveAt": "2025-09-07",
+                      "isPending": false
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "tags": []
+        }
+      }
+    ]
+  },
+  "versionId": "f6b268b2-07d3-4d0d-be0b-8ccc8b5e38bc",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "createdAt": "2025-09-07T11:45:08.704Z",
+      "updatedAt": "2025-09-07T11:45:08.704Z",
+      "role": "workflow:owner",
+      "workflowId": "SL83ALFgwNpFfLYE",
+      "projectId": "EMKC3HvbWexR6hSv"
+    }
+  ],
+  "tags": []
+}
